@@ -1,7 +1,6 @@
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ValidationError } from 'class-validator';
-import { error } from 'console';
 import { AppModule } from './app.module';
 
 async function bootstrap() {

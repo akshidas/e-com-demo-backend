@@ -8,10 +8,13 @@ import { User } from './user.schema';
 export class UserRepo {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-  async create(user: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     try {
-      const createdUser = new this.userModel(user);
-      const savedUser = createdUser.save();
-    } catch (err) {}
+      const createdUser = new this.userModel(createUserDto);
+      return await createdUser.save();
+    } catch (err) {
+      console.log(err);
+      throw new Error('Failed to create user');
+    }
   }
 }
