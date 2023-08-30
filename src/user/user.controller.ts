@@ -1,5 +1,13 @@
-import { Body, Controller, Get, HttpException, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
+import AlreadyExistsException from './exceptions/already-exists';
 import { UserService } from './user.service';
 
 @Controller()
@@ -16,7 +24,9 @@ export class UserController {
       const userCreated = await this.userService.create(createUserDto);
       return userCreated;
     } catch (err) {
-      console.error(err);
+      if (err instanceof AlreadyExistsException) {
+        throw new HttpException(err.message, HttpStatus.CONFLICT);
+      }
       throw new HttpException('Something went wrong', 500);
     }
   }
