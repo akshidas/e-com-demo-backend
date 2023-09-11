@@ -20,8 +20,10 @@ export class UserController {
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
+    console.log('c');
     try {
       const userCreated = await this.userService.create(createUserDto);
+
       return userCreated;
     } catch (err) {
       if (err instanceof AlreadyExistsException) {
