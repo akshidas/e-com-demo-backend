@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import genJwt from 'src/utils/gen-hwt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserRepo } from './user.repo';
 
@@ -7,6 +8,6 @@ export class UserService {
   constructor(private readonly userRepo: UserRepo) {}
   async create(createUserDto: CreateUserDto) {
     const createdUser = await this.userRepo.create(createUserDto);
-    return createdUser;
+    return await genJwt({ email: createdUser.email });
   }
 }

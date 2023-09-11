@@ -21,9 +21,9 @@ export class UserController {
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     try {
-      const userCreated = await this.userService.create(createUserDto);
+      const token = await this.userService.create(createUserDto);
 
-      return userCreated;
+      return { data: token };
     } catch (err) {
       if (err instanceof InternalServerErrorException)
         throw new InternalServerErrorException(err.message);
