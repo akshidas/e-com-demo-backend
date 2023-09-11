@@ -1,37 +1,24 @@
 import {
   Body,
   Controller,
-  NotFoundException,
+  InternalServerErrorException,
   Post,
-  UnauthorizedException,
 } from '@nestjs/common';
-import { UserRepo } from 'src/user/user.repo';
-import genJwt from 'src/utils/gen-hwt';
-import verifyPassword from 'src/utils/vafify-password';
-
-class LoginUserDto {
-  email: string;
-  password: string;
-}
+import { AuthService } from './auth.service';
+import LoginUserDto from './login-user.dto';
 
 @Controller()
 export class AuthController {
-  constructor(private userRepo: UserRepo) {}
+  constructor(private authService: AuthService) {}
 
   @Post('login')
   async login(@Body() loginUserDto: LoginUserDto) {
-    const user = await this.userRepo.getUserByEmail(loginUserDto.email);
-    if (user === null)
-      throw new NotFoundException(
-        `user with email ${loginUserDto.email} does not exist`,
-      );
-    const isMatch = await verifyPassword(loginUserDto.password, user.password);
+    const token = await this.authService.login(loginUserDto);
 
-    if (isMatch) {
-      const token = await genJwt({ email: user.email });
+    if (token) {
       return { data: token };
     }
 
-    throw new UnauthorizedException('passwords do not match');
+    throw new InternalServerErrorException('something went wrong');
   }
 }
