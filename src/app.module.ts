@@ -5,12 +5,17 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 
 import { MongooseModule } from '@nestjs/mongoose';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost/e-com'),
     UserModule,
-    RouterModule.register([{ path: 'users', module: UserModule }]),
+    AuthModule,
+    RouterModule.register([
+      { path: 'users', module: UserModule },
+      { path: 'auth', module: AuthModule },
+    ]),
   ],
   controllers: [AppController],
   providers: [AppService],
