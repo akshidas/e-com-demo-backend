@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import genHash from 'src/utils/gen-hash';
 
 @Schema()
 export class User {
@@ -22,6 +23,9 @@ export class User {
 export type UserDocument = HydratedDocument<User>;
 export const UserSchema = SchemaFactory.createForClass(User);
 
-// UserSchema.pre('save', function (next) {
-//   const user = this;
-// });
+UserSchema.pre('save', async function (next) {
+  const user = this;
+  const hashedPassword = await genHash(user.password);
+  user.password = hashedPassword;
+  next();
+});
