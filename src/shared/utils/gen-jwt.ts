@@ -1,14 +1,13 @@
 import { InternalServerErrorException } from '@nestjs/common';
+import { PRIVATE_KEY } from 'config';
 import { sign } from 'jsonwebtoken';
 
 type JWTPayload = { email: string };
 
 const genJwt = async (payload: JWTPayload) => {
-  try {
-    return sign(payload, 'privateKey', { algorithm: 'none' });
-  } catch (err) {
-    throw new InternalServerErrorException('Failed to generate jwt');
-  }
+  const token = await sign(payload, PRIVATE_KEY, { algorithm: 'RS256' });
+  if (token) return token;
+  throw new InternalServerErrorException('Failed to generate jwt');
 };
 
 export default genJwt;

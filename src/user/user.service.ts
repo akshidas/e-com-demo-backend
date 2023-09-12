@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import genJwt from 'src/utils/gen-hwt';
+import genJwt from 'src/shared/utils/gen-jwt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserRepo } from './user.repo';
 

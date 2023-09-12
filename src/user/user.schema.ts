@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import genHash from 'src/utils/gen-hash';
+import genHash from 'src/shared/utils/gen-hash';
 
 @Schema()
 export class User {

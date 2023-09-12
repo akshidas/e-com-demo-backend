@@ -6,13 +6,22 @@ import {
   HttpException,
   InternalServerErrorException,
   Post,
+  Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 
 @Controller()
 export class UserController {
   constructor(private userService: UserService) {}
+
+  @Get('profile')
+  async getProfile(@Req() req) {
+    const user = await this.userService.getUserByEmail(req.email);
+    return { data: user };
+  }
+
   @Get()
   getAll(user: CreateUserDto) {
     return 'All Users';
