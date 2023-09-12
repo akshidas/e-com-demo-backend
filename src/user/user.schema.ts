@@ -18,6 +18,9 @@ export class User {
 
   @Prop({ required: true, unique: true })
   mobile: string;
+
+  // @Prop({ type: Date })
+  // created_at: string;
 }
 
 export type UserDocument = HydratedDocument<User>;

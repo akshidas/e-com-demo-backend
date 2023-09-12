@@ -1,27 +1,19 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { UserRepo } from 'src/user/user.repo';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { UserService } from 'src/user/user.service';
 import genJwt from 'src/utils/gen-hwt';
 import verifyPassword from 'src/utils/verify-password';
 import LoginUserDto from './login-user.dto';
 @Injectable()
 export class AuthService {
-  constructor(private userRepo: UserRepo) {}
+  constructor(private userService: UserService) {}
 
   async login(loginUserDto: LoginUserDto) {
-    const user = await this.userRepo.getUserByEmail(loginUserDto.email);
-    if (user === null)
-      throw new NotFoundException(
-        `user with email ${loginUserDto.email} does not exist`,
-      );
+    const user = await this.userService.getUserByEmail(loginUserDto.email);
+
     const isMatch = await verifyPassword(loginUserDto.password, user.password);
 
-    if (isMatch) {
-      return await genJwt({ email: user.email });
-    }
+    if (isMatch) return await genJwt({ email: user.email });
+
     throw new UnauthorizedException('passwords do not match');
   }
 }

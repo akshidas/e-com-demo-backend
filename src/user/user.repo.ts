@@ -27,11 +27,7 @@ export class UserRepo {
   }
 
   async getUserByEmail(email: string) {
-    try {
-      const user = await this.userModel.findOne({ email });
-      return user;
-    } catch (err) {
-      console.log(err);
-    }
+    const user = await this.userModel.findOne({ email });
+    return user;
   }
 }

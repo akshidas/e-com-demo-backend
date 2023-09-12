@@ -1,5 +1,4 @@
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
-import exp from 'constants';
 
 class LoginUserDto {
   @IsEmail()
