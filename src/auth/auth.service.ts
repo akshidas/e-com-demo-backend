@@ -8,11 +8,15 @@ export class AuthService {
   constructor(private userService: UserService) {}
 
   async login(loginUserDto: LoginUserDto) {
-    const user = await this.userService.getUserByEmail(loginUserDto.email);
+    const password = await this.userService.getUserPasswordByEmail(
+      loginUserDto.email,
+    );
 
-    const isMatch = await verifyPassword(loginUserDto.password, user.password);
+    const isMatch = await verifyPassword(loginUserDto.password, password);
 
-    if (isMatch) return await genJwt({ email: user.email });
+    if (isMatch) {
+      return await genJwt({ email: loginUserDto.email });
+    }
 
     throw new UnauthorizedException('passwords do not match');
   }

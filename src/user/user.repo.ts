@@ -27,7 +27,12 @@ export class UserRepo {
   }
 
   async getUserByEmail(email: string) {
-    const user = await this.userModel.findOne({ email });
+    const user = await this.userModel.findOne({ email }, '-password');
     return user;
+  }
+
+  async getUserPasswordByEmail(email: string): Promise<string> {
+    const { password } = await this.userModel.findOne({ email }, 'password');
+    return password;
   }
 }
