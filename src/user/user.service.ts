@@ -22,11 +22,11 @@ export class UserService {
     return user;
   }
 
-  async getUserPasswordByEmail(email: string): Promise<string> {
-    const password = await this.userRepo.getUserPasswordByEmail(email);
+  async getUserPasswordByEmail(email: string) {
+    const user = await this.userRepo.getUserPasswordByEmail(email);
 
-    if (password === null)
+    if (user === null)
       throw new InternalServerErrorException(`something went wrong`);
-    return password;
+    return user;
   }
 }

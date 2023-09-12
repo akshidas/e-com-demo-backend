@@ -31,8 +31,8 @@ export class UserRepo {
     return user;
   }
 
-  async getUserPasswordByEmail(email: string): Promise<string> {
-    const { password } = await this.userModel.findOne({ email }, 'password');
+  async getUserPasswordByEmail(email: string) {
+    const password = await this.userModel.findOne({ email }, 'password');
     return password;
   }
 }
