@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import genJwt from 'src/shared/utils/gen-jwt';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepo } from './user.repo';
 
 @Injectable()
@@ -20,6 +21,14 @@ export class UserService {
     if (user === null)
       throw new NotFoundException(`user with email ${email} does not exist`);
     return user;
+  }
+
+  async updateUser(email: string, updatedUserDto: UpdateUserDto) {
+    try {
+      return this.userRepo.updateUser(email, updatedUserDto);
+    } catch (err) {
+      throw new InternalServerErrorException('failed to update user');
+    }
   }
 
   async getUserPasswordByEmail(email: string) {

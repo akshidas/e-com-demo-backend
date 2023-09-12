@@ -13,7 +13,3 @@ export class Auth {
 
 export type AuthDocument = HydratedDocument<Auth>;
 export const AuthSchema = SchemaFactory.createForClass(Auth);
-
-AuthSchema.pre('save', async function (next) {
-  next();
-});

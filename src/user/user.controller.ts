@@ -6,10 +6,12 @@ import {
   HttpException,
   InternalServerErrorException,
   Post,
+  Put,
   Req,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
 @Controller()
@@ -19,6 +21,12 @@ export class UserController {
   @Get('profile')
   async getProfile(@Req() req) {
     const user = await this.userService.getUserByEmail(req.email);
+    return { data: user };
+  }
+
+  @Put('profile')
+  async updateProfile(@Req() req, @Body() updateUserDto: UpdateUserDto) {
+    const user = await this.userService.updateUser(req.email, updateUserDto);
     return { data: user };
   }
 

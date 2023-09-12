@@ -11,6 +11,7 @@ export class AuthRepo {
 
   async create(id: Types.ObjectId) {
     const saved = await this.authModel.findOne({ user_id: id });
+
     if (saved) {
       saved.loggedInTime = [...saved.loggedInTime, now()];
       await saved.save();

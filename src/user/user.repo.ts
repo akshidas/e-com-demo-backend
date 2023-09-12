@@ -2,10 +2,12 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.schema';
 
 @Injectable()
@@ -34,5 +36,16 @@ export class UserRepo {
   async getUserPasswordByEmail(email: string) {
     const password = await this.userModel.findOne({ email }, 'password');
     return password;
+  }
+
+  async updateUser(email: string, updateUserDto: UpdateUserDto) {
+    const updatedUser = await this.userModel.findOneAndUpdate(
+      { email },
+      updateUserDto,
+    );
+
+    if (updatedUser) {
+      return await this.userModel.findById(updatedUser.id, '-password');
+    } else throw new NotFoundException(`user with email ${email} not found`);
   }
 }
