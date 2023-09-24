@@ -2,14 +2,16 @@ import {
   Body,
   ConflictException,
   Controller,
+  Delete,
   Get,
   HttpException,
   InternalServerErrorException,
+  NotFoundException,
+  Param,
   Post,
   Put,
   Req,
 } from '@nestjs/common';
-import { Request } from 'express';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
@@ -30,11 +32,6 @@ export class UserController {
     return { data: user };
   }
 
-  @Get()
-  getAll(user: CreateUserDto) {
-    return 'All Users';
-  }
-
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     try {
@@ -49,6 +46,21 @@ export class UserController {
         throw new ConflictException(err.message);
 
       throw new HttpException('Something went wrong', 500);
+    }
+  }
+
+  @Delete(':id')
+  async DeleteSingleUser(@Param('id') id: string) {
+    try {
+      const deleted = await this.userService.deleteUserById(id);
+      if (deleted) {
+        return;
+      }
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        throw new NotFoundException(err.message);
+      }
+      throw new InternalServerErrorException('failed to delete user');
     }
   }
 }

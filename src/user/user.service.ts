@@ -38,4 +38,8 @@ export class UserService {
       throw new InternalServerErrorException(`something went wrong`);
     return user;
   }
+
+  async deleteUserById(id: string) {
+    return await this.userRepo.deleteOne(id);
+  }
 }

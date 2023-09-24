@@ -48,4 +48,10 @@ export class UserRepo {
       return await this.userModel.findById(updatedUser.id, '-password');
     } else throw new NotFoundException(`user with email ${email} not found`);
   }
+
+  async deleteOne(id: string) {
+    const deletedUser = await this.userModel.findByIdAndRemove(id);
+    if (deletedUser === null) throw new NotFoundException('user not found');
+    return true;
+  }
 }
