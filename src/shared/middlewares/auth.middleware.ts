@@ -11,8 +11,8 @@ class AuthMiddleWare implements NestMiddleware {
   async use(req, res: Response, next: NextFunction) {
     const { authorization } = req.headers;
     if (authorization) {
-      const email = await verifyJwt(authorization.split(' ')[1]);
-      req.email = email;
+      const id = await verifyJwt(authorization.split(' ')[1]);
+      req.id = id;
       next();
       return;
     }

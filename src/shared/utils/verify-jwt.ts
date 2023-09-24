@@ -3,9 +3,9 @@ import { verify } from 'jsonwebtoken';
 
 const verifyJwt = async (token: string) => {
   var decoded = (await verify(token, PRIVATE_KEY)) as {
-    email: string;
+    id: string;
   };
-  return decoded.email;
+  return decoded.id;
 };
 
 export default verifyJwt;

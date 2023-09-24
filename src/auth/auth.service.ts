@@ -25,7 +25,7 @@ export class AuthService {
     if (isMatch) {
       const timeLogged = await this.authRepo.create(id);
       if (timeLogged) {
-        return await genJwt({ email: loginUserDto.email });
+        return await genJwt({ id });
       } else {
         throw new InternalServerErrorException(
           'Failed to save user login time',

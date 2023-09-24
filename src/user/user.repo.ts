@@ -28,11 +28,12 @@ export class UserRepo {
     }
   }
 
-  async getUserByEmail(email: string) {
-    const user = await this.userModel.findOne({ email, deleted_at: null }, [
+  async getUserById(id: string) {
+    const user = await this.userModel.findOne({ _id: id, deleted_at: null }, [
       '-password',
       '-deleted_at',
     ]);
+
     return user;
   }
 
@@ -41,22 +42,24 @@ export class UserRepo {
     return password;
   }
 
-  async updateUser(email: string, updateUserDto: UpdateUserDto) {
+  async updateUser(id: string, updateUserDto: UpdateUserDto) {
     const updatedUser = await this.userModel.findOneAndUpdate(
-      { email },
+      { _id: id },
       { ...updateUserDto, updated_at: now() },
     );
 
     if (updatedUser) {
-      return await this.userModel.findById(updatedUser.id, '-password');
-    } else throw new NotFoundException(`user with email ${email} not found`);
+      return await this.userModel.findById(updatedUser.id, [
+        '-password',
+        '-deleted_at',
+      ]);
+    } else throw new NotFoundException(`user not found`);
   }
 
   async deleteOne(id: string) {
     const deletedUser = await this.userModel.findByIdAndUpdate(id, {
       deleted_at: now(),
     });
-    // const deletedUser = await this.userModel.findByIdAndRemove(id);
     if (deletedUser === null) throw new NotFoundException('user not found');
     return true;
   }

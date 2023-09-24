@@ -22,13 +22,13 @@ export class UserController {
 
   @Get('profile')
   async getProfile(@Req() req) {
-    const user = await this.userService.getUserByEmail(req.email);
+    const user = await this.userService.getUserByEmail(req.id);
     return { data: user };
   }
 
   @Put('profile')
   async updateProfile(@Req() req, @Body() updateUserDto: UpdateUserDto) {
-    const user = await this.userService.updateUser(req.email, updateUserDto);
+    const user = await this.userService.updateUser(req.id, updateUserDto);
     return { data: user };
   }
 
@@ -49,10 +49,10 @@ export class UserController {
     }
   }
 
-  @Delete(':id')
-  async DeleteSingleUser(@Param('id') id: string) {
+  @Delete()
+  async DeleteSingleUser(@Req() req) {
     try {
-      const deleted = await this.userService.deleteUserById(id);
+      const deleted = await this.userService.deleteUserById(req.id);
       if (deleted) {
         return;
       }

@@ -13,19 +13,18 @@ export class UserService {
   constructor(private readonly userRepo: UserRepo) {}
   async create(createUserDto: CreateUserDto) {
     const createdUser = await this.userRepo.create(createUserDto);
-    return await genJwt({ email: createdUser.email });
+    return await genJwt({ id: createdUser.id });
   }
 
-  async getUserByEmail(email: string) {
-    const user = await this.userRepo.getUserByEmail(email);
-    if (user === null)
-      throw new NotFoundException(`user with email ${email} does not exist`);
+  async getUserByEmail(id: string) {
+    const user = await this.userRepo.getUserById(id);
+    if (user === null) throw new NotFoundException(`user does not exist`);
     return user;
   }
 
-  async updateUser(email: string, updatedUserDto: UpdateUserDto) {
+  async updateUser(id: string, updatedUserDto: UpdateUserDto) {
     try {
-      return this.userRepo.updateUser(email, updatedUserDto);
+      return this.userRepo.updateUser(id, updatedUserDto);
     } catch (err) {
       throw new InternalServerErrorException('failed to update user');
     }
@@ -33,9 +32,8 @@ export class UserService {
 
   async getUserPasswordByEmail(email: string) {
     const user = await this.userRepo.getUserPasswordByEmail(email);
-
     if (user === null)
-      throw new InternalServerErrorException(`something went wrong`);
+      throw new NotFoundException(`user with email ${email} not found`);
     return user;
   }
 
