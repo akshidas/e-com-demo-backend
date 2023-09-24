@@ -53,7 +53,10 @@ export class UserRepo {
   }
 
   async deleteOne(id: string) {
-    const deletedUser = await this.userModel.findByIdAndRemove(id);
+    const deletedUser = await this.userModel.findByIdAndUpdate(id, {
+      deleted_at: now(),
+    });
+    // const deletedUser = await this.userModel.findByIdAndRemove(id);
     if (deletedUser === null) throw new NotFoundException('user not found');
     return true;
   }
