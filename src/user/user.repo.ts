@@ -29,7 +29,10 @@ export class UserRepo {
   }
 
   async getUserByEmail(email: string) {
-    const user = await this.userModel.findOne({ email }, '-password');
+    const user = await this.userModel.findOne({ email, deleted_at: null }, [
+      '-password',
+      '-deleted_at',
+    ]);
     return user;
   }
 
