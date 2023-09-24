@@ -34,7 +34,8 @@ export const UserSchema = SchemaFactory.createForClass(User);
 
 UserSchema.pre('save', async function (next) {
   const user = this;
-  
+
+  console.log(user);
   const hashedPassword = await genHash(user.password);
   user.password = hashedPassword;
   next();

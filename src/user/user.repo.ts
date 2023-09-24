@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, now } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.schema';
@@ -41,7 +41,7 @@ export class UserRepo {
   async updateUser(email: string, updateUserDto: UpdateUserDto) {
     const updatedUser = await this.userModel.findOneAndUpdate(
       { email },
-      updateUserDto,
+      { ...updateUserDto, updated_at: now() },
     );
 
     if (updatedUser) {
