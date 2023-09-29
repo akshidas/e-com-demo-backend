@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Types } from 'mongoose';
 import { AddressRepo } from './address.repo';
 import { CreateAddressDto } from './dto/create-address.dto';
 
@@ -10,5 +11,9 @@ export class AddressService {
   }
   async create(createAddressDto: CreateAddressDto, userId: string) {
     return await this.addressRepo.create(createAddressDto, userId);
+  }
+
+  async deleteOneById(addressId: Types.ObjectId) {
+    return await this.addressRepo.deleteOneById(addressId);
   }
 }

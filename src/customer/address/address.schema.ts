@@ -22,9 +22,6 @@ export class Address {
   @Prop()
   updated_at?: Date;
 
-  @Prop({ default: null })
-  deleted_at?: Date;
-
   @Prop({ type: M_Schema.Types.ObjectId, ref: Customer.name })
   customer?: Customer;
 }

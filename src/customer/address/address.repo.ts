@@ -1,6 +1,10 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Address } from './address.schema';
 import { CreateAddressDto } from './dto/create-address.dto';
 
@@ -13,7 +17,6 @@ export class AddressRepo {
   async getAllAddressOfCustomerById(customerId: string) {
     const addresses = await this.addressModel.find({
       customer: customerId,
-      deleted_at: null,
     });
     return addresses;
   }
@@ -29,5 +32,15 @@ export class AddressRepo {
       console.log(err);
       throw new InternalServerErrorException('failed to create address');
     }
+  }
+
+  async deleteOneById(id: Types.ObjectId) {
+    const deletedAddress = await this.addressModel.findByIdAndRemove(id);
+
+    if (deletedAddress) {
+      return deletedAddress;
+    }
+
+    throw new NotFoundException('address not found');
   }
 }

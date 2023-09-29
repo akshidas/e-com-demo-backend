@@ -1,12 +1,15 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   InternalServerErrorException,
   NotFoundException,
+  Param,
   Post,
   Req,
 } from '@nestjs/common';
+import { Types } from 'mongoose';
 import { AddressService } from './address.service';
 import { CreateAddressDto } from './dto/create-address.dto';
 
@@ -27,7 +30,6 @@ export class AddressController {
       }
       throw new InternalServerErrorException(err.message);
     }
-    return 'all';
   }
 
   @Post()
@@ -38,5 +40,24 @@ export class AddressController {
     );
 
     return { data: savedAddress };
+  }
+
+  @Delete(':id')
+  async deleteOneById(@Param() id: string) {
+    try {
+      const deletedAddress = await this.addressService.deleteOneById(
+        new Types.ObjectId(id),
+      );
+
+      if (deletedAddress) {
+        return { data: deletedAddress };
+      }
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        throw new NotFoundException(err.message);
+      }
+
+      throw new InternalServerErrorException('something went wrong');
+    }
   }
 }
