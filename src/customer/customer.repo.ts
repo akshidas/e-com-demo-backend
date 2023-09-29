@@ -6,17 +6,17 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, now } from 'mongoose';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './user.schema';
+import { Customer } from './customer.schema';
+import { CreateCustomerDto } from './dto/create-customer.dto';
+import { UpdateCustomerDto } from './dto/update-customer.dto';
 
 @Injectable()
-export class UserRepo {
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+export class CustomerRepo {
+  constructor(@InjectModel(Customer.name) private userModel: Model<Customer>) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createCustomerDto: CreateCustomerDto) {
     try {
-      const createdUser = new this.userModel(createUserDto);
+      const createdUser = new this.userModel(createCustomerDto);
       return await createdUser.save();
     } catch (err) {
       if (err.code === 11000) {
@@ -42,10 +42,10 @@ export class UserRepo {
     return password;
   }
 
-  async updateUser(id: string, updateUserDto: UpdateUserDto) {
+  async updateUser(id: string, updateCustomerDto: UpdateCustomerDto) {
     const updatedUser = await this.userModel.findOneAndUpdate(
       { _id: id },
-      { ...updateUserDto, updated_at: now() },
+      { ...updateCustomerDto, updated_at: now() },
     );
 
     if (updatedUser) {

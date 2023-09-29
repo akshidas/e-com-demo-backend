@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UserRepo } from '../user.repo';
+import { CustomerRepo } from '../customer.repo';
 import { Address } from './address.schema';
 import { CreateAddressDto } from './dto/create-address.dto';
 
@@ -9,7 +9,7 @@ import { CreateAddressDto } from './dto/create-address.dto';
 export class AddressRepo {
   constructor(
     @InjectModel(Address.name) private addressModel: Model<Address>,
-    private readonly userRepo: UserRepo,
+    private readonly customerRepo: CustomerRepo,
   ) {}
 
   async create(createAddressDto: CreateAddressDto) {

@@ -4,19 +4,19 @@ import { AddressController } from './address/address.controller';
 import { AddressRepo } from './address/address.repo';
 import { Address, AddressSchema } from './address/address.schema';
 import { AddressService } from './address/address.service';
-import { UserController } from './user.controller';
-import { UserRepo } from './user.repo';
-import { User, UserSchema } from './user.schema';
-import { UserService } from './user.service';
+import { CustomerController } from './customer.controller';
+import { CustomerRepo } from './customer.repo';
+import { Customer, CustomerSchema } from './customer.schema';
+import { CustomerService } from './customer.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: User.name, schema: UserSchema },
+      { name: Customer.name, schema: CustomerSchema },
       { name: Address.name, schema: AddressSchema },
     ]),
   ],
-  controllers: [UserController, AddressController],
-  providers: [UserRepo, UserService, AddressService, AddressRepo],
+  controllers: [CustomerController, AddressController],
+  providers: [CustomerRepo, CustomerService, AddressService, AddressRepo],
 })
-export class UserModule {}
+export class CustomerModule {}

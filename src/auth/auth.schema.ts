@@ -1,10 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { User } from 'src/user/user.schema';
+import { Customer } from 'src/customer/customer.schema';
 
 @Schema()
 export class Auth {
-  @Prop({ type: Types.ObjectId, ref: User.name })
+  @Prop({ type: Types.ObjectId, ref: Customer.name })
   user_id: Types.ObjectId;
 
   @Prop()

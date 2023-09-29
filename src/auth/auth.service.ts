@@ -3,20 +3,20 @@ import {
   InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { CustomerService } from 'src/customer/customer.service';
 import genJwt from 'src/shared/utils/gen-jwt';
 import verifyPassword from 'src/shared/utils/verify-password';
-import { UserService } from 'src/user/user.service';
 import { AuthRepo } from './auth.repo';
 import LoginUserDto from './login-user.dto';
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UserService,
+    private customerService: CustomerService,
     private readonly authRepo: AuthRepo,
   ) {}
 
   async login(loginUserDto: LoginUserDto) {
-    const { password, id } = await this.userService.getUserPasswordByEmail(
+    const { password, id } = await this.customerService.getUserPasswordByEmail(
       loginUserDto.email,
     );
 
