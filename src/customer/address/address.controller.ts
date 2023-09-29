@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  InternalServerErrorException,
+  NotFoundException,
+  Post,
+  Req,
+} from '@nestjs/common';
 import { AddressService } from './address.service';
 import { CreateAddressDto } from './dto/create-address.dto';
 
@@ -6,7 +14,19 @@ import { CreateAddressDto } from './dto/create-address.dto';
 export class AddressController {
   constructor(private readonly addressService: AddressService) {}
   @Get()
-  async getAll() {
+  async getAll(@Req() req) {
+    try {
+      const addresses = await this.addressService.getAddressByCustomerId(
+        req.id,
+      );
+
+      return { data: addresses };
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        throw new NotFoundException(err.message);
+      }
+      throw new InternalServerErrorException(err.message);
+    }
     return 'all';
   }
 
