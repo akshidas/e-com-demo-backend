@@ -7,11 +7,13 @@ import {
   NotFoundException,
   Param,
   Post,
+  Put,
   Req,
 } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { AddressService } from './address.service';
 import { CreateAddressDto } from './dto/create-address.dto';
+import { UpdateAddressDto } from './dto/update-address.dto';
 
 @Controller('address')
 export class AddressController {
@@ -40,6 +42,24 @@ export class AddressController {
     );
 
     return { data: savedAddress };
+  }
+  @Put(':id')
+  async findByIdAndUpdate(
+    @Param() id: string,
+    @Body() updateAddressDto: UpdateAddressDto,
+  ) {
+    try {
+      const updatedAddress = await this.addressService.updateById(
+        new Types.ObjectId(id),
+        updateAddressDto,
+      );
+      return { data: updatedAddress };
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        throw new NotFoundException(err.message);
+      }
+      throw new InternalServerErrorException(err.message);
+    }
   }
 
   @Delete(':id')

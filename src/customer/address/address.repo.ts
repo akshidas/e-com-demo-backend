@@ -7,6 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Address } from './address.schema';
 import { CreateAddressDto } from './dto/create-address.dto';
+import { UpdateAddressDto } from './dto/update-address.dto';
 
 @Injectable()
 export class AddressRepo {
@@ -15,9 +16,12 @@ export class AddressRepo {
   ) {}
 
   async getAllAddressOfCustomerById(customerId: string) {
-    const addresses = await this.addressModel.find({
-      customer: customerId,
-    });
+    const addresses = await this.addressModel.find(
+      {
+        customer: customerId,
+      },
+      ['-customer'],
+    );
     return addresses;
   }
 
@@ -34,11 +38,28 @@ export class AddressRepo {
     }
   }
 
+  async updateById(id: Types.ObjectId, updateAddressDto: UpdateAddressDto) {
+    const updatedAddress = await this.addressModel.findByIdAndUpdate(
+      id,
+      {
+        ...updateAddressDto,
+        updated_at: Date(),
+      },
+      { new: true, fields: ['-customer'] },
+    );
+
+    if (updatedAddress) {
+      return updatedAddress;
+    }
+
+    throw new NotFoundException('address not found');
+  }
+
   async deleteOneById(id: Types.ObjectId) {
-    const deletedAddress = await this.addressModel.findByIdAndRemove(id);
+    const deletedAddress = await this.addressModel.findByIdAndDelete(id);
 
     if (deletedAddress) {
-      return deletedAddress;
+      return { id: deletedAddress.id };
     }
 
     throw new NotFoundException('address not found');
