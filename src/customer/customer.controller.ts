@@ -7,35 +7,40 @@ import {
   HttpException,
   InternalServerErrorException,
   NotFoundException,
-  Param,
   Post,
   Put,
   Req,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UserService } from './user.service';
+import { CustomerService } from './customer.service';
+import { CreateCustomerDto } from './dto/create-customer.dto';
+import { UpdateCustomerDto } from './dto/update-customer.dto';
 
 @Controller()
-export class UserController {
-  constructor(private userService: UserService) {}
+export class CustomerController {
+  constructor(private customerService: CustomerService) {}
 
   @Get('profile')
   async getProfile(@Req() req) {
-    const user = await this.userService.getUserByEmail(req.id);
+    const user = await this.customerService.getById(req.id);
     return { data: user };
   }
 
   @Put('profile')
-  async updateProfile(@Req() req, @Body() updateUserDto: UpdateUserDto) {
-    const user = await this.userService.updateUser(req.id, updateUserDto);
+  async updateProfile(
+    @Req() req,
+    @Body() updateCustomerDto: UpdateCustomerDto,
+  ) {
+    const user = await this.customerService.updateUser(
+      req.id,
+      updateCustomerDto,
+    );
     return { data: user };
   }
 
   @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() updateCustomerDto: CreateCustomerDto) {
     try {
-      const token = await this.userService.create(createUserDto);
+      const token = await this.customerService.create(updateCustomerDto);
 
       return { data: token };
     } catch (err) {
@@ -52,7 +57,7 @@ export class UserController {
   @Delete()
   async DeleteSingleUser(@Req() req) {
     try {
-      const deleted = await this.userService.deleteUserById(req.id);
+      const deleted = await this.customerService.deleteUserById(req.id);
       if (deleted) {
         return;
       }

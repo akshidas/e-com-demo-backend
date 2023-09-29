@@ -3,7 +3,7 @@ import { HydratedDocument, now } from 'mongoose';
 import genHash from 'src/shared/utils/gen-hash';
 
 @Schema()
-export class User {
+export class Customer {
   @Prop({ required: true })
   firstName: string;
 
@@ -29,10 +29,10 @@ export class User {
   deleted_at?: Date;
 }
 
-export type UserDocument = HydratedDocument<User>;
-export const UserSchema = SchemaFactory.createForClass(User);
+export type CustomerDocument = HydratedDocument<Customer>;
+export const CustomerSchema = SchemaFactory.createForClass(Customer);
 
-UserSchema.pre('save', async function (next) {
+CustomerSchema.pre('save', async function (next) {
   const user = this;
   const hashedPassword = await genHash(user.password);
   user.password = hashedPassword;
