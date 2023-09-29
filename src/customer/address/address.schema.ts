@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Schema as M_Schema, now } from 'mongoose';
+import { Customer } from '../customer.schema';
 
 @Schema()
 export class Address {
@@ -14,6 +15,18 @@ export class Address {
 
   @Prop({ required: true })
   pincode: string;
+
+  @Prop({ default: now() })
+  created_at?: Date;
+
+  @Prop()
+  updated_at?: Date;
+
+  @Prop({ default: null })
+  deleted_at?: Date;
+
+  @Prop({ type: M_Schema.Types.ObjectId, ref: Customer.name })
+  customer?: Customer;
 }
 export type AddressDocument = HydratedDocument<Address>;
 export const AddressSchema = SchemaFactory.createForClass(Address);

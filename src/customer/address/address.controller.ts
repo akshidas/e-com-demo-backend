@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { AddressService } from './address.service';
 import { CreateAddressDto } from './dto/create-address.dto';
 
@@ -11,7 +11,12 @@ export class AddressController {
   }
 
   @Post()
-  async create(createAddressDto: CreateAddressDto) {
-    const address = await this.addressService.create(createAddressDto);
+  async create(@Req() req, @Body() createAddressDto: CreateAddressDto) {
+    const savedAddress = await this.addressService.create(
+      createAddressDto,
+      req.id,
+    );
+
+    return { data: savedAddress };
   }
 }

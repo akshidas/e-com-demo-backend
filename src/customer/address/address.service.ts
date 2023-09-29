@@ -6,5 +6,7 @@ import { CreateAddressDto } from './dto/create-address.dto';
 export class AddressService {
   constructor(private readonly addressRepo: AddressRepo) {}
 
-  async create(createAddressDto: CreateAddressDto) {}
+  async create(createAddressDto: CreateAddressDto, userId: string) {
+    return await this.addressRepo.create(createAddressDto, userId);
+  }
 }

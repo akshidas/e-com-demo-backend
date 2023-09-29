@@ -16,7 +16,7 @@ export class CustomerService {
     return await genJwt({ id: createdUser.id });
   }
 
-  async getUserByEmail(id: string) {
+  async getById(id: string) {
     const user = await this.customerRepo.getUserById(id);
     if (user === null) throw new NotFoundException(`user does not exist`);
     return user;

@@ -7,7 +7,6 @@ import {
   HttpException,
   InternalServerErrorException,
   NotFoundException,
-  Param,
   Post,
   Put,
   Req,
@@ -22,7 +21,7 @@ export class CustomerController {
 
   @Get('profile')
   async getProfile(@Req() req) {
-    const user = await this.customerService.getUserByEmail(req.id);
+    const user = await this.customerService.getById(req.id);
     return { data: user };
   }
 

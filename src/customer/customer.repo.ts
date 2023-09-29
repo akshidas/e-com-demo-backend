@@ -32,6 +32,7 @@ export class CustomerRepo {
     const user = await this.userModel.findOne({ _id: id, deleted_at: null }, [
       '-password',
       '-deleted_at',
+      '-address',
     ]);
 
     return user;
