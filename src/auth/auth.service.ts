@@ -16,16 +16,15 @@ export class AuthService {
   ) {}
 
   async login(loginUserDto: LoginUserDto) {
-    const { password, id } = await this.customerService.getUserPasswordByEmail(
-      loginUserDto.email,
-    );
+    const { password, id, isAdmin } =
+      await this.customerService.getUserPasswordByEmail(loginUserDto.email);
 
     const isMatch = await verifyPassword(loginUserDto.password, password);
 
     if (isMatch) {
       const timeLogged = await this.authRepo.create(id);
       if (timeLogged) {
-        return await genJwt({ id });
+        return await genJwt({ id, isAdmin });
       } else {
         throw new InternalServerErrorException(
           'Failed to save user login time',

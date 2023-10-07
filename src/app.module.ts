@@ -6,6 +6,7 @@ import { CustomerModule } from './customer/customer.module';
 
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
+import AdminMiddleWare from './shared/middlewares/admin.middleware';
 import AuthMiddleWare from './shared/middlewares/auth.middleware';
 
 @Module({
@@ -27,5 +28,9 @@ export class AppModule {
       .apply(AuthMiddleWare)
       .exclude({ path: 'users', method: RequestMethod.POST })
       .forRoutes('v1/users');
+    consumer.apply(AdminMiddleWare).forRoutes({
+      path: 'v1/users',
+      method: RequestMethod.GET,
+    });
   }
 }

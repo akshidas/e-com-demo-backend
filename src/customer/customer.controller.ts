@@ -10,7 +10,6 @@ import {
   Post,
   Put,
   Req,
-  Version,
 } from '@nestjs/common';
 import { CustomerService } from './customer.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
@@ -21,6 +20,11 @@ import { UpdateCustomerDto } from './dto/update-customer.dto';
 })
 export class CustomerController {
   constructor(private customerService: CustomerService) {}
+
+  @Get()
+  async getAll() {
+    return this.customerService.getAll();
+  }
 
   @Get('profile')
   async getProfile(@Req() req) {

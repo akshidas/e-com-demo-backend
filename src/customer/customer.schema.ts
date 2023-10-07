@@ -19,6 +19,9 @@ export class Customer {
   @Prop({ required: true, unique: true })
   mobile: string;
 
+  @Prop({ default: false })
+  isAdmin?: boolean;
+
   @Prop({ default: now() })
   created_at?: Date;
 

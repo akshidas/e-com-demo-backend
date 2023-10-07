@@ -1,5 +1,4 @@
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
-import { Address } from '../address/address.schema';
 import { Customer } from '../customer.schema';
 
 export class CreateCustomerDto implements Customer {
