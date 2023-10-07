@@ -14,6 +14,14 @@ import { UpdateCustomerDto } from './dto/update-customer.dto';
 export class CustomerRepo {
   constructor(@InjectModel(Customer.name) private userModel: Model<Customer>) {}
 
+  async getAllUsers() {
+    try {
+      return await this.userModel.find();
+    } catch (err) {
+      throw new InternalServerErrorException('something went wrong');
+    }
+  }
+
   async create(createCustomerDto: CreateCustomerDto) {
     try {
       const createdUser = new this.userModel(createCustomerDto);
@@ -38,8 +46,7 @@ export class CustomerRepo {
   }
 
   async getUserPasswordByEmail(email: string) {
-    const password = await this.userModel.findOne({ email }, 'password');
-    return password;
+    return await this.userModel.findOne({ email }, ['password', 'isAdmin']);
   }
 
   async updateUser(id: string, updateCustomerDto: UpdateCustomerDto) {

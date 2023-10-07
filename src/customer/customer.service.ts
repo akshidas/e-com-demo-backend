@@ -11,6 +11,10 @@ import { UpdateCustomerDto } from './dto/update-customer.dto';
 @Injectable()
 export class CustomerService {
   constructor(private readonly customerRepo: CustomerRepo) {}
+
+  async getAll() {
+    return this.customerRepo.getAllUsers();
+  }
   async create(createCustomerDto: CreateCustomerDto) {
     const createdUser = await this.customerRepo.create(createCustomerDto);
     return await genJwt({ id: createdUser.id });

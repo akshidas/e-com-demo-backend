@@ -19,6 +19,9 @@ export class Customer {
   @Prop({ required: true, unique: true })
   mobile: string;
 
+  @Prop({ default: false })
+  isAdmin?: boolean;
+
   @Prop({ default: now() })
   created_at?: Date;
 
@@ -36,5 +39,6 @@ CustomerSchema.pre('save', async function (next) {
   const user = this;
   const hashedPassword = await genHash(user.password);
   user.password = hashedPassword;
+  this.isAdmin = false;
   next();
 });

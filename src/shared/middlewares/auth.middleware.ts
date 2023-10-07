@@ -1,23 +1,15 @@
-import {
-  Injectable,
-  NestMiddleware,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Response } from 'express';
+import extractJwtFromHeaders from '../utils/extract-jwt-from-header';
 import verifyJwt from '../utils/verify-jwt';
 
 @Injectable()
 class AuthMiddleWare implements NestMiddleware {
   async use(req, res: Response, next: NextFunction) {
-    const { authorization } = req.headers;
-    if (authorization) {
-      const id = await verifyJwt(authorization.split(' ')[1]);
-      req.id = id;
-      next();
-      return;
-    }
-
-    throw new UnauthorizedException('unauthorized user');
+    const { id, isAdmin } = await verifyJwt(extractJwtFromHeaders(req.headers));
+    req.id = id;
+    req.isAdmin = isAdmin;
+    next();
   }
 }
 
