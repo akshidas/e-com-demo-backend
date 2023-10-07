@@ -21,4 +21,6 @@ export class CreateCustomerDto implements Customer {
   @IsNotEmpty()
   @IsString()
   password: string;
+
+  isAdmin?: boolean;
 }

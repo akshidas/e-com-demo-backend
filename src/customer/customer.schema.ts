@@ -39,5 +39,6 @@ CustomerSchema.pre('save', async function (next) {
   const user = this;
   const hashedPassword = await genHash(user.password);
   user.password = hashedPassword;
+  this.isAdmin = false;
   next();
 });
