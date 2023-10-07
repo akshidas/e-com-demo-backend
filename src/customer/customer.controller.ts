@@ -10,12 +10,15 @@ import {
   Post,
   Put,
   Req,
+  Version,
 } from '@nestjs/common';
 import { CustomerService } from './customer.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 
-@Controller()
+@Controller({
+  version: '1',
+})
 export class CustomerController {
   constructor(private customerService: CustomerService) {}
 

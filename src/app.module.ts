@@ -26,6 +26,6 @@ export class AppModule {
     consumer
       .apply(AuthMiddleWare)
       .exclude({ path: 'users', method: RequestMethod.POST })
-      .forRoutes('users');
+      .forRoutes('v1/users');
   }
 }
