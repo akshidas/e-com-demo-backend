@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { isValidObjectId } from 'mongoose';
 import { CategoryRepo } from './category.repo';
 import { CreateCategoryDto } from './dto/create-category.dto';
 
@@ -14,5 +15,11 @@ export class CategoryService {
     return this.categoryRepo.getAll();
   }
 
-  //   async getOne
+  async getOne(slug: string) {
+    if (isValidObjectId(slug)) {
+      return this.categoryRepo.getOne(slug);
+    } else {
+      return this.categoryRepo.getBySlug(slug);
+    }
+  }
 }

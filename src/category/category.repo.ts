@@ -29,12 +29,31 @@ export class CategoryRepo {
   }
 
   async getAll() {
-    const categories = await this.categoryModel.find();
+    const categories = await this.categoryModel.find(
+      { deleted_at: null },
+      '-deleted_at',
+    );
     return categories;
   }
 
-  async getOne(filter: { id?: string; slug: string }) {
-    const category = await this.categoryModel.findOne(filter);
+  async getOne(id: string) {
+    const category = await this.categoryModel.findOne({
+      _id: id,
+      deleted_at: null,
+    });
+
+    if (category) {
+      return category;
+    }
+
+    throw new NotFoundException('category not found');
+  }
+
+  async getBySlug(slug: string) {
+    const category = await this.categoryModel.findOne({
+      slug,
+      deleted_at: null,
+    });
 
     if (category) {
       return category;

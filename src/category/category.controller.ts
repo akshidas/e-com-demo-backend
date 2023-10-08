@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  InternalServerErrorException,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 
@@ -15,12 +22,21 @@ export class CategoryController {
     );
 
     if (createCategoryDto) {
-      return { date: createdCategory };
+      return { data: createdCategory };
     }
   }
 
   @Get()
   async getAll() {
-    return this.categoryService.getAll();
+    const categories = await this.categoryService.getAll();
+    return { data: categories };
+  }
+
+  @Get(':slug')
+  async getOne(@Param('slug') slug: string) {
+    const category = await this.categoryService.getOne(slug);
+    if (category) return { data: category };
+
+    throw new InternalServerErrorException('something went wrong');
   }
 }
