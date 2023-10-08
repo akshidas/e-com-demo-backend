@@ -1,5 +1,7 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import AdminMiddleWare from 'src/shared/middlewares/admin.middleware';
+import AuthMiddleWare from 'src/shared/middlewares/auth.middleware';
 import { AddressController } from './address/address.controller';
 import { AddressRepo } from './address/address.repo';
 import { Address, AddressSchema } from './address/address.schema';
@@ -19,4 +21,15 @@ import { CustomerService } from './customer.service';
   controllers: [CustomerController, AddressController],
   providers: [CustomerRepo, CustomerService, AddressService, AddressRepo],
 })
-export class CustomerModule {}
+export class CustomerModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleWare)
+      .exclude({ path: 'users', method: RequestMethod.POST })
+      .forRoutes('v1/users');
+    consumer.apply(AdminMiddleWare).forRoutes({
+      path: 'v1/users',
+      method: RequestMethod.GET,
+    });
+  }
+}
