@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   InternalServerErrorException,
   Param,
@@ -37,6 +38,13 @@ export class CategoryController {
     const category = await this.categoryService.getOne(slug);
     if (category) return { data: category };
 
+    throw new InternalServerErrorException('something went wrong');
+  }
+
+  @Delete(':id')
+  async deleteOne(@Param('id') id: string) {
+    const status = await this.categoryService.deleteOne(id);
+    if (status) return { data: id };
     throw new InternalServerErrorException('something went wrong');
   }
 }

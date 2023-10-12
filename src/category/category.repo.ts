@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, now } from 'mongoose';
 import { Category } from './category.schema';
 import { CreateCategoryDto } from './dto/create-category.dto';
 
@@ -60,5 +60,21 @@ export class CategoryRepo {
     }
 
     throw new NotFoundException('category not found');
+  }
+
+  async deleteOne(id: string) {
+    const deletedCategory = await this.categoryModel.findOneAndUpdate(
+      {
+        _id: id,
+        deleted_at: null,
+      },
+      {
+        deleted_at: now(),
+      },
+    );
+
+    if (deletedCategory === null)
+      throw new NotFoundException('category not found');
+    return true;
   }
 }
