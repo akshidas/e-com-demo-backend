@@ -8,6 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, now } from 'mongoose';
 import { Category } from './category.schema';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Injectable()
 export class CategoryRepo {
@@ -62,16 +63,28 @@ export class CategoryRepo {
     throw new NotFoundException('category not found');
   }
 
-  async deleteOne(id: string) {
-    const deletedCategory = await this.categoryModel.findOneAndUpdate(
+  async updateById(id, updateCategoryDto: UpdateCategoryDto) {
+    const updatedCategory = await this.categoryModel.findOneAndUpdate(
       {
         _id: id,
         deleted_at: null,
       },
+      updateCategoryDto,
       {
-        deleted_at: now(),
+        returnOriginal: false,
       },
     );
+    if (updatedCategory === null)
+      throw new NotFoundException('category not found');
+
+    return updatedCategory;
+  }
+
+  async deleteOne(id: string) {
+    const deletedCategory = await this.updateById(id, {
+      deleted_at: now(),
+      updated_at: now(),
+    } as UpdateCategoryDto);
 
     if (deletedCategory === null)
       throw new NotFoundException('category not found');

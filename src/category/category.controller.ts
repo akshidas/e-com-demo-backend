@@ -6,9 +6,11 @@ import {
   InternalServerErrorException,
   Param,
   Post,
+  Put,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Controller({
   version: '1',
@@ -37,6 +39,23 @@ export class CategoryController {
   async getOne(@Param('slug') slug: string) {
     const category = await this.categoryService.getOne(slug);
     if (category) return { data: category };
+
+    throw new InternalServerErrorException('something went wrong');
+  }
+
+  @Put(':id')
+  async updateOne(
+    @Param('id') id: string,
+    @Body() updateCategoryDto: UpdateCategoryDto,
+  ) {
+    const updatedData = await this.categoryService.updateOne(
+      id,
+      updateCategoryDto,
+    );
+
+    if (updatedData) {
+      return { data: updatedData };
+    }
 
     throw new InternalServerErrorException('something went wrong');
   }

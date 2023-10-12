@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { isValidObjectId } from 'mongoose';
 import { CategoryRepo } from './category.repo';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Injectable()
 export class CategoryService {
@@ -21,6 +22,10 @@ export class CategoryService {
     } else {
       return this.categoryRepo.getBySlug(slug);
     }
+  }
+
+  async updateOne(id: string, updateCategoryDto: UpdateCategoryDto) {
+    return this.categoryRepo.updateById(id, updateCategoryDto);
   }
 
   async deleteOne(id: string) {

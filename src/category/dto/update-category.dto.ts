@@ -1,15 +1,9 @@
-import {
-  IsBoolean,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  Matches,
-} from 'class-validator';
+import { IsBoolean, IsOptional, IsString, Matches } from 'class-validator';
 import { Category } from '../category.schema';
 
-export class CreateCategoryDto implements Category {
+export class UpdateCategoryDto implements Category {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   name: string;
 
   @IsString()
@@ -20,4 +14,7 @@ export class CreateCategoryDto implements Category {
   @IsBoolean()
   @IsOptional()
   status: boolean;
+
+  deleted_at?: Date;
+  updated_at?: Date;
 }
