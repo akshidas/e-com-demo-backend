@@ -1,10 +1,13 @@
 import {
   Body,
+  ConflictException,
   Controller,
   InternalServerErrorException,
   Post,
+  UsePipes,
 } from '@nestjs/common';
 import { CreateProductsDto } from './dto/create-products.dto';
+import { ConvertSlug } from './product-slug-tranform.pipe';
 import { ProductsService } from './products.service';
 
 @Controller({
@@ -13,6 +16,7 @@ import { ProductsService } from './products.service';
 export class ProductsController {
   constructor(private readonly productService: ProductsService) {}
   @Post()
+  @UsePipes(new ConvertSlug())
   async createProduct(@Body() createProductDto: CreateProductsDto) {
     try {
       const savedProduct = await this.productService.createProduct(
@@ -21,7 +25,8 @@ export class ProductsController {
 
       return { data: savedProduct };
     } catch (err) {
-      console.log(err);
+      if (err instanceof ConflictException)
+        throw new ConflictException(err.message);
       throw new InternalServerErrorException('something went wrong');
     }
   }
