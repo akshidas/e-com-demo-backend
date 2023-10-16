@@ -12,7 +12,10 @@ export class ProductsRepo {
   ) {}
 
   async getAll() {
-    return this.productModel.find({ deleted_at: null });
+    return this.productModel.find({ deleted_at: null }, [
+      '-deleted_at',
+      '-updated_at',
+    ]);
   }
 
   async createProduct(createProductDto: CreateProductsDto) {
