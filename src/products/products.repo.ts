@@ -1,10 +1,7 @@
-import {
-  ConflictException,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
 import { CreateProductsDto } from './dto/create-products.dto';
 import { Product } from './products.schema';
 
@@ -21,8 +18,7 @@ export class ProductsRepo {
       return savedProduct;
     } catch (err) {
       if (err.code === 11000) {
-        const [k, v] = Object.entries(err.keyValue).find(Boolean);
-        throw new ConflictException(`${k} with value ${v} already exists`);
+        throw new DuplicateKeyError(err);
       }
 
       throw new InternalServerErrorException('something went wrong');

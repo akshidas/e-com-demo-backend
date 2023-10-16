@@ -6,8 +6,9 @@ import {
   Post,
   UsePipes,
 } from '@nestjs/common';
+import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
 import { CreateProductsDto } from './dto/create-products.dto';
-import { ConvertSlug } from './product-slug-tranform.pipe';
+import { ConvertSlug } from './product-slug-transform.pipe';
 import { ProductsService } from './products.service';
 
 @Controller({
@@ -25,7 +26,7 @@ export class ProductsController {
 
       return { data: savedProduct };
     } catch (err) {
-      if (err instanceof ConflictException)
+      if (err instanceof DuplicateKeyError)
         throw new ConflictException(err.message);
       throw new InternalServerErrorException('something went wrong');
     }
