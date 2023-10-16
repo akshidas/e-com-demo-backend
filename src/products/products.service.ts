@@ -6,6 +6,10 @@ import { ProductsRepo } from './products.repo';
 export class ProductsService {
   constructor(private readonly productRepo: ProductsRepo) {}
 
+  async getAll() {
+    return this.productRepo.getAll();
+  }
+
   async createProduct(createProductDto: CreateProductsDto) {
     return this.productRepo.createProduct(createProductDto);
   }

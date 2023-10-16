@@ -2,6 +2,7 @@ import {
   Body,
   ConflictException,
   Controller,
+  Get,
   InternalServerErrorException,
   Post,
   UsePipes,
@@ -16,6 +17,17 @@ import { ProductsService } from './products.service';
 })
 export class ProductsController {
   constructor(private readonly productService: ProductsService) {}
+
+  @Get()
+  async getAll() {
+    try {
+      const products = await this.productService.getAll();
+      return { data: products };
+    } catch (err) {
+      throw new InternalServerErrorException('something went wrong');
+    }
+  }
+
   @Post()
   @UsePipes(new ConvertSlug())
   async createProduct(@Body() createProductDto: CreateProductsDto) {

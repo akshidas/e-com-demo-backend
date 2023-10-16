@@ -11,6 +11,10 @@ export class ProductsRepo {
     @InjectModel(Product.name) private productModel: Model<Product>,
   ) {}
 
+  async getAll() {
+    return this.productModel.find({ deleted_at: null });
+  }
+
   async createProduct(createProductDto: CreateProductsDto) {
     try {
       const newProduct = new this.productModel(createProductDto);
