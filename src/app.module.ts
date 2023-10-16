@@ -12,7 +12,7 @@ import AuthMiddleWare from './shared/middlewares/auth.middleware';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/test', {
+    MongooseModule.forRoot('mongodb://localhost/demo', {
       autoIndex: true,
     } as ConnectOptions),
     CustomerModule,

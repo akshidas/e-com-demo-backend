@@ -21,8 +21,8 @@ export class ProductsRepo {
       return savedProduct;
     } catch (err) {
       if (err.code === 11000) {
-        console.log(err.keyValue);
-        throw new ConflictException(err.message);
+        const [k, v] = Object.entries(err.keyValue).find(Boolean);
+        throw new ConflictException(`${k} with value ${v} already exists`);
       }
 
       throw new InternalServerErrorException('something went wrong');
