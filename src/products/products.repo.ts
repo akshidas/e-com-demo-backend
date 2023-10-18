@@ -1,11 +1,12 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, MongooseError } from 'mongoose';
+import { Category } from 'src/category/category.schema';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
 import UpdateFailedError from 'src/shared/utils/errors/update-failed.error';
 import { CreateProductsDto } from './dto/create-products.dto';
 import { UpdateProductDto } from './dto/update-products.dto';
-import { Product } from './products.schema';
+import { Product, ProductDocument } from './products.schema';
 
 @Injectable()
 export class ProductsRepo {
@@ -20,35 +21,39 @@ export class ProductsRepo {
     ]);
   }
 
-  async getOneById(id: string) {
-    return await this.productModel
-      .findOne(
-        {
-          _id: id,
-          deleted_at: null,
-        },
-        ['-deleted_at', '-updated_at'],
-      )
-      .populate({
-        path: 'category_id',
-        select: ['name', 'slug'],
-      })
-      .exec();
+  private async populateCategory(product: ProductDocument) {
+    const populated = await product.populate({
+      path: 'category',
+      select: ['name', 'slug'],
+    });
+
+    populated.category_id = undefined;
+
+    return populated;
   }
+
+  async getOneById(id: string) {
+    const product = await this.productModel.findOne(
+      {
+        _id: id,
+        deleted_at: null,
+      },
+      ['-deleted_at', '-updated_at'],
+    );
+
+    return this.populateCategory(product);
+  }
+
   async getOneBySlug(slug: string) {
-    return await this.productModel
-      .findOne(
-        {
-          slug: slug,
-          deleted_at: null,
-        },
-        ['-deleted_at', '-updated_at'],
-      )
-      .populate({
-        path: 'category_id',
-        select: ['name', 'slug'],
-      })
-      .exec();
+    const product = await this.productModel.findOne(
+      {
+        slug: slug,
+        deleted_at: null,
+      },
+      ['-deleted_at', '-updated_at'],
+    );
+
+    return this.populateCategory(product);
   }
 
   async createProduct(createProductDto: CreateProductsDto) {

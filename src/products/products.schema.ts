@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types, now } from 'mongoose';
 import { Category } from 'src/category/category.schema';
 
-@Schema()
+@Schema({ toJSON: { virtuals: true }, id: false })
 export class Product {
   @Prop({ required: true })
   name: string;
@@ -34,3 +34,10 @@ export class Product {
 
 export type ProductDocument = HydratedDocument<Product>;
 export const ProductSchema = SchemaFactory.createForClass(Product);
+
+ProductSchema.virtual('category', {
+  ref: Category.name,
+  localField: 'category_id',
+  foreignField: '_id',
+  justOne: true,
+});

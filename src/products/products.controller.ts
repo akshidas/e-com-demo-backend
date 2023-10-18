@@ -39,6 +39,8 @@ export class ProductsController {
       const product = await this.productService.getOne(slug);
       return { data: product };
     } catch (err) {
+      console.log(err);
+
       throw new InternalServerErrorException('something went wrong');
     }
   }
