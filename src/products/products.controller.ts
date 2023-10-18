@@ -2,6 +2,7 @@ import {
   Body,
   ConflictException,
   Controller,
+  Delete,
   Get,
   InternalServerErrorException,
   NotFoundException,
@@ -69,6 +70,20 @@ export class ProductsController {
         updateProductDto,
       );
       if (savedProduct) return { data: savedProduct };
+    } catch (err) {
+      if (err instanceof DuplicateKeyError)
+        throw new ConflictException(err.message);
+      if (err instanceof NotFoundException)
+        throw new NotFoundException(err.message);
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
+  @Delete(':slug')
+  async deleteProduct(@Param('slug') slug: string) {
+    try {
+      const product = await this.productService.deleteProduct(slug);
+      if (product) return { data: product };
     } catch (err) {
       if (err instanceof DuplicateKeyError)
         throw new ConflictException(err.message);

@@ -33,4 +33,7 @@ export class UpdateProductDto implements Product {
   @IsOptional()
   @IsNumber()
   category_id: Types.ObjectId;
+
+  @IsOptional()
+  deleted_at?: Date;
 }

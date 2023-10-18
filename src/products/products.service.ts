@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { isValidObjectId } from 'mongoose';
+import { isValidObjectId, now } from 'mongoose';
 import { CreateProductsDto } from './dto/create-products.dto';
 import { UpdateProductDto } from './dto/update-products.dto';
 import { ProductsRepo } from './products.repo';
@@ -24,7 +24,7 @@ export class ProductsService {
     return this.productRepo.createProduct(createProductDto);
   }
 
-  private async identifyParamAndCallRepo(
+  private async identifyParamAndUpdate(
     slug: string,
     updateProductDto: UpdateProductDto,
   ) {
@@ -34,13 +34,24 @@ export class ProductsService {
   }
 
   async updateProduct(slug: string, updateProductDto: UpdateProductDto) {
-    const updatedProduct = await this.identifyParamAndCallRepo(
+    const updatedProduct = await this.identifyParamAndUpdate(
       slug,
       updateProductDto,
     );
 
     if (updatedProduct) {
       return updatedProduct;
+    }
+    throw new NotFoundException('product not found');
+  }
+
+  async deleteProduct(slug: string) {
+    const deletedProduct = await this.identifyParamAndUpdate(slug, {
+      deleted_at: now(),
+    } as UpdateProductDto);
+
+    if (deletedProduct) {
+      return deletedProduct;
     }
     throw new NotFoundException('product not found');
   }

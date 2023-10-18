@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, MongooseError } from 'mongoose';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
 import UpdateFailedError from 'src/shared/utils/errors/update-failed.error';
 import { CreateProductsDto } from './dto/create-products.dto';
@@ -56,7 +56,7 @@ export class ProductsRepo {
   async updateProductById(id: string, updateProductDto: UpdateProductDto) {
     try {
       const updatedProduct = this.productModel.findOneAndUpdate(
-        { _id: id },
+        { _id: id, deleted_at: null },
         updateProductDto,
         {
           returnOriginal: false,
@@ -72,8 +72,8 @@ export class ProductsRepo {
 
   async updateProductBySlug(slug: string, updateProductDto: UpdateProductDto) {
     try {
-      const updatedProduct = this.productModel.findOneAndUpdate(
-        { slug: slug },
+      const updatedProduct = await this.productModel.findOneAndUpdate(
+        { slug: slug, deleted_at: null },
         updateProductDto,
         {
           returnOriginal: false,
@@ -82,6 +82,9 @@ export class ProductsRepo {
 
       return updatedProduct;
     } catch (err) {
+      if (err.code === 11000) {
+        throw new DuplicateKeyError(err);
+      }
       throw new UpdateFailedError(slug);
     }
   }
