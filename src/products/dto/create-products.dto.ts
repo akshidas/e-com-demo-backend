@@ -32,6 +32,6 @@ export class CreateProductsDto implements Product {
   status: boolean;
 
   @IsNotEmpty()
-  @IsNumber()
+  @IsString()
   category_id: Types.ObjectId;
 }

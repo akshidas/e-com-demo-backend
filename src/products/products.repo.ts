@@ -21,22 +21,34 @@ export class ProductsRepo {
   }
 
   async getOneById(id: string) {
-    return await this.productModel.findOne(
-      {
-        _id: id,
-        deleted_at: null,
-      },
-      ['-deleted_at', '-updated_at'],
-    );
+    return await this.productModel
+      .findOne(
+        {
+          _id: id,
+          deleted_at: null,
+        },
+        ['-deleted_at', '-updated_at'],
+      )
+      .populate({
+        path: 'category_id',
+        select: ['name', 'slug'],
+      })
+      .exec();
   }
   async getOneBySlug(slug: string) {
-    return await this.productModel.findOne(
-      {
-        slug: slug,
-        deleted_at: null,
-      },
-      ['-deleted_at', '-updated_at'],
-    );
+    return await this.productModel
+      .findOne(
+        {
+          slug: slug,
+          deleted_at: null,
+        },
+        ['-deleted_at', '-updated_at'],
+      )
+      .populate({
+        path: 'category_id',
+        select: ['name', 'slug'],
+      })
+      .exec();
   }
 
   async createProduct(createProductDto: CreateProductsDto) {

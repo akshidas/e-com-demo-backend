@@ -31,7 +31,7 @@ export class UpdateProductDto implements Product {
   status: boolean;
 
   @IsOptional()
-  @IsNumber()
+  @IsString()
   category_id: Types.ObjectId;
 
   @IsOptional()
