@@ -1,7 +1,9 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { RouterModule } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { ConnectOptions } from 'mongoose';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -9,7 +11,6 @@ import { CategoryModule } from './category/category.module';
 import { CustomerModule } from './customer/customer.module';
 import { ProductsModule } from './products/products.module';
 import AuthMiddleWare from './shared/middlewares/auth.middleware';
-
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost/demo', {

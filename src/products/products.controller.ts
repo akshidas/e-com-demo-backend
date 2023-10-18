@@ -9,8 +9,12 @@ import {
   Param,
   Post,
   Put,
+  UploadedFile,
+  UseInterceptors,
   UsePipes,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
 import { CreateProductsDto } from './dto/create-products.dto';
 import { UpdateProductDto } from './dto/update-products.dto';
@@ -59,6 +63,21 @@ export class ProductsController {
         throw new ConflictException(err.message);
       throw new InternalServerErrorException('something went wrong');
     }
+  }
+
+  @Post(':id/upload')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads/',
+        filename(req, file, callback) {
+          callback(null, file.originalname);
+        },
+      }),
+    }),
+  )
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    // console.log(file);
   }
 
   @Put(':slug')
