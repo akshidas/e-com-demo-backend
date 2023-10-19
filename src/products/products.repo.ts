@@ -9,7 +9,7 @@ import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
 import UpdateFailedError from 'src/shared/utils/errors/update-failed.error';
 import { CreateProductsDto } from './dto/create-products.dto';
 import { UpdateProductDto } from './dto/update-products.dto';
-import { Product, ProductDocument } from './products.schema';
+import { Product } from './products.schema';
 
 type Filter = {
   slug?: string;
