@@ -65,21 +65,6 @@ export class ProductsController {
     }
   }
 
-  @Post(':id/upload')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads/',
-        filename(req, file, callback) {
-          callback(null, file.originalname);
-        },
-      }),
-    }),
-  )
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
-    return { data: `http://localhost:3000/${file.filename}` };
-  }
-
   @Put(':slug')
   async updateProduct(
     @Body() updateProductDto: UpdateProductDto,
