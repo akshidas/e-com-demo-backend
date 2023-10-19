@@ -77,7 +77,7 @@ export class ProductsController {
     }),
   )
   uploadFile(@UploadedFile() file: Express.Multer.File) {
-    // console.log(file);
+    return { data: `http://localhost:3000/${file.filename}` };
   }
 
   @Put(':slug')
