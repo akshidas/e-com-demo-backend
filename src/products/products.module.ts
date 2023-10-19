@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Image, ImageSchema } from 'src/images/image.schema';
 import AdminMiddleWare from 'src/shared/middlewares/admin.middleware';
@@ -19,6 +19,12 @@ import { ProductsService } from './products.service';
 })
 export class ProductsModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AdminMiddleWare).forRoutes('v1/products');
+    consumer
+      .apply(AdminMiddleWare)
+      .exclude(
+        { path: 'v1/products', method: RequestMethod.GET },
+        { path: 'v1/products/:slug', method: RequestMethod.GET },
+      )
+      .forRoutes('v1/products');
   }
 }
