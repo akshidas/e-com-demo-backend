@@ -9,12 +9,8 @@ import {
   Param,
   Post,
   Put,
-  UploadedFile,
-  UseInterceptors,
   UsePipes,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
 import { CreateProductsDto } from './dto/create-products.dto';
 import { UpdateProductDto } from './dto/update-products.dto';
@@ -39,14 +35,8 @@ export class ProductsController {
 
   @Get(':slug')
   async getOne(@Param('slug') slug: string) {
-    try {
-      const product = await this.productService.getOne(slug);
-      return { data: product };
-    } catch (err) {
-      console.log(err);
-
-      throw new InternalServerErrorException('something went wrong');
-    }
+    const product = await this.productService.getOne(slug);
+    return { data: product };
   }
 
   @Post()

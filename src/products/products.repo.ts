@@ -1,6 +1,10 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
 import UpdateFailedError from 'src/shared/utils/errors/update-failed.error';
 import { CreateProductsDto } from './dto/create-products.dto';
@@ -20,39 +24,42 @@ export class ProductsRepo {
     ]);
   }
 
-  private async populateCategory(product: ProductDocument) {
-    const populated = await product.populate({
-      path: 'category',
-      select: ['name', 'slug'],
-    });
+  private async findOne(filter: {
+    slug?: string;
+    _id?: Types.ObjectId | string;
+  }) {
+    try {
+      const populated = await this.productModel
+        .findOne(
+          {
+            ...filter,
+            deleted_at: null,
+          },
+          ['-deleted_at', '-updated_at'],
+        )
+        .populate({
+          path: 'category',
+          select: ['name', 'slug'],
+        })
+        .populate({ path: 'images', select: ['name', 'url'] });
 
-    populated.category_id = undefined;
+      populated.category_id = undefined;
 
-    return populated;
+      return populated;
+    } catch (err) {
+      if (err instanceof TypeError) {
+        throw new NotFoundException('the resource does not exist');
+      }
+      throw new InternalServerErrorException(err.message);
+    }
   }
 
   async getOneById(id: string) {
-    const product = await this.productModel.findOne(
-      {
-        _id: id,
-        deleted_at: null,
-      },
-      ['-deleted_at', '-updated_at'],
-    );
-
-    return this.populateCategory(product);
+    return this.findOne({ _id: id });
   }
 
   async getOneBySlug(slug: string) {
-    const product = await this.productModel.findOne(
-      {
-        slug: slug,
-        deleted_at: null,
-      },
-      ['-deleted_at', '-updated_at'],
-    );
-
-    return this.populateCategory(product);
+    return this.findOne({ slug: slug });
   }
 
   async createProduct(createProductDto: CreateProductsDto) {
@@ -71,15 +78,16 @@ export class ProductsRepo {
 
   async updateProductById(id: string, updateProductDto: UpdateProductDto) {
     try {
-      const updatedProduct = this.productModel.findOneAndUpdate(
+      const updatedProduct = await this.productModel.findOneAndUpdate(
         { _id: id, deleted_at: null },
         updateProductDto,
         {
           returnOriginal: false,
         },
       );
-
-      return updatedProduct;
+      if (updatedProduct) {
+        return this.findOne({ _id: updatedProduct.id });
+      }
     } catch (err) {
       console.log(err);
       throw new UpdateFailedError(id);
@@ -96,7 +104,9 @@ export class ProductsRepo {
         },
       );
 
-      return updatedProduct;
+      if (updatedProduct) {
+        return this.findOne({ _id: updatedProduct._id });
+      }
     } catch (err) {
       if (err.code === 11000) {
         throw new DuplicateKeyError(err);

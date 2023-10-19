@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsBoolean,
   IsNumber,
   IsOptional,
@@ -6,6 +7,7 @@ import {
   Matches,
 } from 'class-validator';
 import { Types } from 'mongoose';
+import { Image } from 'src/images/image.schema';
 import { Product } from '../products.schema';
 
 export class UpdateProductDto implements Product {
@@ -20,6 +22,10 @@ export class UpdateProductDto implements Product {
   @IsOptional()
   @IsNumber()
   price: number;
+
+  @IsArray()
+  @IsOptional()
+  images: Image[];
 
   @IsOptional()
   @IsString()

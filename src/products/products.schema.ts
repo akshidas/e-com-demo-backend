@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types, now } from 'mongoose';
 import { Category } from 'src/category/category.schema';
+import { Image } from 'src/images/image.schema';
 
 @Schema({ toJSON: { virtuals: true }, id: false })
 export class Product {
@@ -21,6 +22,9 @@ export class Product {
 
   @Prop({ type: Types.ObjectId, ref: Category.name })
   category_id: Types.ObjectId;
+
+  @Prop({ type: [Types.ObjectId], ref: Image.name })
+  images: Image[];
 
   @Prop({ default: now() })
   created_at?: Date;
