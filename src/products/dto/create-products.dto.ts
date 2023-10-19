@@ -21,6 +21,7 @@ export class CreateProductsDto implements Product {
   sku: string;
 
   @IsArray()
+  @IsNotEmpty()
   images: Image[];
 
   @IsNotEmpty()

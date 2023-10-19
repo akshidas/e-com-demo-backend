@@ -11,6 +11,11 @@ import { CreateProductsDto } from './dto/create-products.dto';
 import { UpdateProductDto } from './dto/update-products.dto';
 import { Product, ProductDocument } from './products.schema';
 
+type Filter = {
+  slug?: string;
+  _id?: Types.ObjectId | string;
+};
+
 @Injectable()
 export class ProductsRepo {
   constructor(
@@ -24,10 +29,7 @@ export class ProductsRepo {
     ]);
   }
 
-  private async findOne(filter: {
-    slug?: string;
-    _id?: Types.ObjectId | string;
-  }) {
+  private async findOne(filter: Filter) {
     try {
       const populated = await this.productModel
         .findOne(
@@ -43,13 +45,19 @@ export class ProductsRepo {
         })
         .populate({ path: 'images', select: ['name', 'url'] });
 
-      populated.category_id = undefined;
+      if (populated) {
+        populated.category_id = undefined;
 
-      return populated;
+        return populated;
+      }
+      throw new NotFoundException('the resource does not exist');
     } catch (err) {
       if (err instanceof TypeError) {
         throw new NotFoundException('the resource does not exist');
       }
+      if (err instanceof NotFoundException)
+        throw new NotFoundException(err.message);
+
       throw new InternalServerErrorException(err.message);
     }
   }
@@ -86,10 +94,9 @@ export class ProductsRepo {
         },
       );
       if (updatedProduct) {
-        return this.findOne({ _id: updatedProduct.id });
+        return this.findOne({ _id: updatedProduct._id });
       }
     } catch (err) {
-      console.log(err);
       throw new UpdateFailedError(id);
     }
   }

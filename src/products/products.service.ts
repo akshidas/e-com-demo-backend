@@ -46,13 +46,18 @@ export class ProductsService {
   }
 
   async deleteProduct(slug: string) {
-    const deletedProduct = await this.identifyParamAndUpdate(slug, {
-      deleted_at: now(),
-    } as UpdateProductDto);
+    try {
+      const deletedProduct = await this.identifyParamAndUpdate(slug, {
+        deleted_at: now(),
+      } as UpdateProductDto);
 
-    if (deletedProduct) {
-      return deletedProduct;
+      if (deletedProduct) {
+        return deletedProduct;
+      }
+    } catch (err) {
+      if (err instanceof NotFoundException) {
+        return true;
+      }
     }
-    throw new NotFoundException('product not found');
   }
 }

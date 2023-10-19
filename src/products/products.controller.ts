@@ -78,8 +78,7 @@ export class ProductsController {
   @Delete(':slug')
   async deleteProduct(@Param('slug') slug: string) {
     try {
-      const product = await this.productService.deleteProduct(slug);
-      if (product) return { data: product };
+      await this.productService.deleteProduct(slug);
     } catch (err) {
       if (err instanceof DuplicateKeyError)
         throw new ConflictException(err.message);
