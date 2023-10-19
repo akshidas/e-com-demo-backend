@@ -33,7 +33,6 @@ export class AddressRepo {
       });
       return await createdAddress.save();
     } catch (err) {
-      console.log(err);
       throw new InternalServerErrorException('failed to create address');
     }
   }

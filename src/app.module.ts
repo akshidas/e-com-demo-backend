@@ -7,20 +7,25 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './category/category.module';
 import { CustomerModule } from './customer/customer.module';
+import { ImagesModule } from './images/images.module';
+import { ProductsModule } from './products/products.module';
 import AuthMiddleWare from './shared/middlewares/auth.middleware';
-
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/test', {
+    MongooseModule.forRoot('mongodb://localhost/demo', {
       autoIndex: true,
     } as ConnectOptions),
     CustomerModule,
     AuthModule,
     CategoryModule,
+    ProductsModule,
+    ImagesModule,
     RouterModule.register([
       { path: 'users', module: CustomerModule },
       { path: 'auth', module: AuthModule },
       { path: 'categories', module: CategoryModule },
+      { path: 'products', module: ProductsModule },
+      { path: 'images', module: ImagesModule },
     ]),
   ],
   controllers: [AppController],
