@@ -8,8 +8,10 @@ import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './category/category.module';
 import { ImagesModule } from './images/images.module';
 import { ProductsModule } from './products/products.module';
+import { RoleModule } from './roles/role.module';
 import AuthMiddleWare from './shared/middlewares/auth.middleware';
 import { UserModule } from './user/user.module';
+``;
 
 @Module({
   imports: [
@@ -37,6 +39,7 @@ import { UserModule } from './user/user.module';
       { path: 'products', module: ProductsModule },
       { path: 'images', module: ImagesModule },
     ]),
+    RoleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
