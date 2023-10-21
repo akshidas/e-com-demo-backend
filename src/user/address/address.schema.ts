@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Schema as M_Schema, now } from 'mongoose';
-import { Customer } from '../customer.schema';
+import { User } from '../user.schema';
 
 @Schema()
 export class Address {
@@ -22,8 +22,8 @@ export class Address {
   @Prop()
   updated_at?: Date;
 
-  @Prop({ type: M_Schema.Types.ObjectId, ref: Customer.name })
-  customer?: Customer;
+  @Prop({ type: M_Schema.Types.ObjectId, ref: User.name })
+  user?: User;
 }
 export type AddressDocument = HydratedDocument<Address>;
 export const AddressSchema = SchemaFactory.createForClass(Address);

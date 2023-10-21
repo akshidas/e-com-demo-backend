@@ -3,7 +3,7 @@ import { HydratedDocument, now } from 'mongoose';
 import genHash from 'src/shared/utils/gen-hash';
 
 @Schema()
-export class Customer {
+export class User {
   @Prop({ required: true })
   firstName: string;
 
@@ -19,9 +19,6 @@ export class Customer {
   @Prop({ required: true, unique: true })
   mobile: string;
 
-  @Prop({ default: false })
-  isAdmin?: boolean;
-
   @Prop({ default: now() })
   created_at?: Date;
 
@@ -32,13 +29,12 @@ export class Customer {
   deleted_at?: Date;
 }
 
-export type CustomerDocument = HydratedDocument<Customer>;
-export const CustomerSchema = SchemaFactory.createForClass(Customer);
+export type UserDocument = HydratedDocument<User>;
+export const UserSchema = SchemaFactory.createForClass(User);
 
-CustomerSchema.pre('save', async function (next) {
+UserSchema.pre('save', async function (next) {
   const user = this;
   const hashedPassword = await genHash(user.password);
   user.password = hashedPassword;
-  user.isAdmin = false;
   next();
 });

@@ -22,7 +22,7 @@ export class Category {
   deleted_at?: Date;
 }
 
-export type CustomerDocument = HydratedDocument<Category>;
+export type CategoryDocument = HydratedDocument<Category>;
 export const CategorySchema = SchemaFactory.createForClass(Category);
 
 CategorySchema.pre('save', async function (next) {

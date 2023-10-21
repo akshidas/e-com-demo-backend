@@ -6,13 +6,13 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, now } from 'mongoose';
-import { Customer } from './customer.schema';
-import { CreateCustomerDto } from './dto/create-customer.dto';
-import { UpdateCustomerDto } from './dto/update-customer.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './user.schema';
 
 @Injectable()
-export class CustomerRepo {
-  constructor(@InjectModel(Customer.name) private userModel: Model<Customer>) {}
+export class UserRepo {
+  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async getAllUsers() {
     try {
@@ -22,9 +22,9 @@ export class CustomerRepo {
     }
   }
 
-  async create(createCustomerDto: CreateCustomerDto) {
+  async create(createUserDto: CreateUserDto) {
     try {
-      const createdUser = new this.userModel(createCustomerDto);
+      const createdUser = new this.userModel(createUserDto);
       return await createdUser.save();
     } catch (err) {
       if (err.code === 11000) {
@@ -49,10 +49,10 @@ export class CustomerRepo {
     return await this.userModel.findOne({ email }, ['password', 'isAdmin']);
   }
 
-  async updateUser(id: string, updateCustomerDto: UpdateCustomerDto) {
+  async updateUser(id: string, updateUserDto: UpdateUserDto) {
     const updatedUser = await this.userModel.findOneAndUpdate(
       { _id: id },
-      { ...updateCustomerDto, updated_at: now() },
+      { ...updateUserDto, updated_at: now() },
     );
 
     if (updatedUser) {

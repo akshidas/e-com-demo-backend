@@ -7,8 +7,8 @@ import { UpdateAddressDto } from './dto/update-address.dto';
 @Injectable()
 export class AddressService {
   constructor(private readonly addressRepo: AddressRepo) {}
-  async getAddressByCustomerId(userId: string) {
-    return this.addressRepo.getAllAddressOfCustomerById(userId);
+  async getAddressByUserId(userId: string) {
+    return this.addressRepo.getAllAddressOfUserById(userId);
   }
   async create(createAddressDto: CreateAddressDto, userId: string) {
     return await this.addressRepo.create(createAddressDto, userId);
