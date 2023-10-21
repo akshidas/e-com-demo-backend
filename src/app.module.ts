@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { RouterModule } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConnectOptions } from 'mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -10,11 +10,21 @@ import { CustomerModule } from './customer/customer.module';
 import { ImagesModule } from './images/images.module';
 import { ProductsModule } from './products/products.module';
 import AuthMiddleWare from './shared/middlewares/auth.middleware';
+
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/demo', {
-      autoIndex: true,
-    } as ConnectOptions),
+    ConfigModule.forRoot(),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => {
+        const DB_NAME = config.get('DATABASE_NAME');
+        return {
+          autoIndex: true,
+          uri: `mongodb://localhost/${DB_NAME}`,
+        };
+      },
+    }),
     CustomerModule,
     AuthModule,
     CategoryModule,
