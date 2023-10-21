@@ -46,7 +46,7 @@ export class UserRepo {
   }
 
   async getUserPasswordByEmail(email: string) {
-    return await this.userModel.findOne({ email }, ['password', 'isAdmin']);
+    return await this.userModel.findOne({ email }, ['password']);
   }
 
   async updateUser(id: string, updateUserDto: UpdateUserDto) {
