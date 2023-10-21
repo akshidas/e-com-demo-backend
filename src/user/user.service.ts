@@ -12,6 +12,9 @@ import { UserRepo } from './user.repo';
 export class UserService {
   constructor(private readonly userRepo: UserRepo) {}
 
+  async insertMultipleUsers(usersList: CreateUserDto[]) {
+    return this.userRepo.createMany(usersList);
+  }
   async getAll() {
     return this.userRepo.getAllUsers();
   }
