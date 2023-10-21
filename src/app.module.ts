@@ -10,6 +10,7 @@ import { ImagesModule } from './images/images.module';
 import { ProductsModule } from './products/products.module';
 import { RoleModule } from './roles/role.module';
 import { SeederModule } from './seeder/seeder.module';
+import { RoleModule } from './roles/role.module';
 import AuthMiddleWare from './shared/middlewares/auth.middleware';
 import { UserModule } from './user/user.module';
 ``;
