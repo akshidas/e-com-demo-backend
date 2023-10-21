@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, now } from 'mongoose';
+import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.schema';
@@ -13,7 +14,16 @@ import { User } from './user.schema';
 @Injectable()
 export class UserRepo {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
-
+  async createMany(usersList: CreateUserDto[]) {
+    try {
+      await this.userModel.insertMany(usersList);
+    } catch (err) {
+      if (err.code === 11000) {
+        throw new DuplicateKeyError(err);
+      }
+      throw new Error('failed to seed');
+    }
+  }
   async getAllUsers() {
     try {
       return await this.userModel.find();

@@ -21,6 +21,7 @@ import { UserModule } from './user/user.module';
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => {
         const DB_NAME = config.get('DATABASE_NAME');
+        console.log(DB_NAME);
         return {
           autoIndex: true,
           uri: `mongodb://localhost/${DB_NAME}`,
