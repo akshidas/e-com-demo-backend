@@ -5,22 +5,22 @@ import { AddressController } from './address/address.controller';
 import { AddressRepo } from './address/address.repo';
 import { Address, AddressSchema } from './address/address.schema';
 import { AddressService } from './address/address.service';
-import { CustomerController } from './customer.controller';
-import { CustomerRepo } from './customer.repo';
-import { Customer, CustomerSchema } from './customer.schema';
-import { CustomerService } from './customer.service';
+import { UserController } from './user.controller';
+import { UserRepo } from './user.repo';
+import { User, UserSchema } from './user.schema';
+import { UserService } from './user.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: Customer.name, schema: CustomerSchema },
+      { name: User.name, schema: UserSchema },
       { name: Address.name, schema: AddressSchema },
     ]),
   ],
-  controllers: [CustomerController, AddressController],
-  providers: [CustomerRepo, CustomerService, AddressService, AddressRepo],
+  controllers: [UserController, AddressController],
+  providers: [UserRepo, UserService, AddressService, AddressRepo],
 })
-export class CustomerModule {
+export class UserModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AdminMiddleWare).forRoutes({
       path: 'v1/users',

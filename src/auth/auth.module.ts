@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CustomerRepo } from 'src/customer/customer.repo';
-import { Customer, CustomerSchema } from 'src/customer/customer.schema';
-import { CustomerService } from 'src/customer/customer.service';
+import { UserRepo } from 'src/user/user.repo';
+import { User, UserSchema } from 'src/user/user.schema';
+import { UserService } from 'src/user/user.service';
 import { AuthController } from './auth.controller';
 import { AuthRepo } from './auth.repo';
 import { Auth, AuthSchema } from './auth.schema';
@@ -11,7 +11,7 @@ import { AuthService } from './auth.service';
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: Customer.name, schema: CustomerSchema },
+      { name: User.name, schema: UserSchema },
       {
         name: Auth.name,
         schema: AuthSchema,
@@ -19,6 +19,6 @@ import { AuthService } from './auth.service';
     ]),
   ],
   controllers: [AuthController],
-  providers: [CustomerRepo, CustomerService, AuthService, AuthRepo],
+  providers: [UserRepo, UserService, AuthService, AuthRepo],
 })
 export class AuthModule {}

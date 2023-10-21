@@ -15,21 +15,21 @@ export class AddressRepo {
     @InjectModel(Address.name) private addressModel: Model<Address>,
   ) {}
 
-  async getAllAddressOfCustomerById(customerId: string) {
+  async getAllAddressOfUserById(userId: string) {
     const addresses = await this.addressModel.find(
       {
-        customer: customerId,
+        user: userId,
       },
-      ['-customer'],
+      ['-user'],
     );
     return addresses;
   }
 
-  async create(createAddressDto: CreateAddressDto, customerId: string) {
+  async create(createAddressDto: CreateAddressDto, userId: string) {
     try {
       const createdAddress = new this.addressModel({
         ...createAddressDto,
-        customer: customerId,
+        user: userId,
       });
       return await createdAddress.save();
     } catch (err) {
@@ -44,7 +44,7 @@ export class AddressRepo {
         ...updateAddressDto,
         updated_at: Date(),
       },
-      { new: true, fields: ['-customer'] },
+      { new: true, fields: ['-user'] },
     );
 
     if (updatedAddress) {

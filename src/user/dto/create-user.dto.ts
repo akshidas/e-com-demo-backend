@@ -1,7 +1,6 @@
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
-import { Customer } from '../customer.schema';
 
-export class CreateCustomerDto implements Customer {
+export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   firstName: string;
@@ -21,6 +20,4 @@ export class CreateCustomerDto implements Customer {
   @IsNotEmpty()
   @IsString()
   password: string;
-
-  isAdmin?: boolean;
 }
