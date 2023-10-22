@@ -8,7 +8,6 @@ async function bootstrap() {
       const seeder = appContext.get(SeederService);
       try {
         await seeder.seedUser();
-        await seeder.seedProduct();
       } catch (err) {
         throw err;
       } finally {
