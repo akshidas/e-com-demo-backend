@@ -3,6 +3,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
+import EntityNotFound from 'src/shared/utils/errors/entity-not-found.error';
 import genJwt from 'src/shared/utils/gen-jwt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -14,6 +15,12 @@ export class UserService {
 
   async insertMultipleUsers(usersList: CreateUserDto[]) {
     return this.userRepo.createMany(usersList);
+  }
+
+  async getAdmin() {
+    const admin = this.userRepo.getOneByMail('admin@gmail.com');
+    if (admin) return admin;
+    throw new EntityNotFound('admin@gmail.com');
   }
   async getAll() {
     return this.userRepo.getAllUsers();

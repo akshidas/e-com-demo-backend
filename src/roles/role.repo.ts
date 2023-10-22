@@ -6,6 +6,7 @@ import EntityNotFound from 'src/shared/utils/errors/entity-not-found.error';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './role.schema';
+import { Roles } from './types/role.type';
 
 @Injectable()
 export class RoleRepo {
@@ -33,6 +34,18 @@ export class RoleRepo {
     if (role) return role;
 
     throw new EntityNotFound(`role with value ${id} does not exist`);
+  }
+
+  async getOneByType(type: Roles) {
+    const role = await this.roleModel.findOne(
+      {
+        name: type,
+      },
+      'name',
+    );
+    if (role) return role;
+
+    throw new EntityNotFound(`role with value ${type} does not exist`);
   }
 
   async updateOne(id: string, updateRoleDto: UpdateRoleDto) {

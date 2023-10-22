@@ -11,6 +11,10 @@ export class RoleService {
     return await this.roleRepo.create(createRoleDto);
   }
 
+  async getAdmin() {
+    return this.roleRepo.getOneByType('admin');
+  }
+
   async getAll() {
     return this.roleRepo.getAll();
   }

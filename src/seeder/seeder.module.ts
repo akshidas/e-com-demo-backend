@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { GroupModule } from 'src/group/group.module';
+import { Group, GroupSchema } from 'src/group/group.schema';
+import { GroupService } from 'src/group/group.service';
 import { RoleModule } from 'src/roles/role.module';
 import { RoleRepo } from 'src/roles/role.repo';
 import { Role, RoleSchema } from 'src/roles/role.schema';
@@ -27,9 +30,11 @@ import { SeederService } from './seeder.service';
     }),
     RoleModule,
     UserModule,
+    GroupModule,
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Role.name, schema: RoleSchema },
+      { name: Group.name, schema: GroupSchema },
     ]),
   ],
   providers: [SeederService, UserService, UserRepo, RoleService, RoleRepo],

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { GroupService } from 'src/group/group.service';
 import { CreateRoleDto } from 'src/roles/dto/create-role.dto';
 import { RoleService } from 'src/roles/roles.service';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
@@ -17,7 +18,7 @@ const sellerRole: CreateRoleDto = {
   description: 'role for admin',
 };
 const adminRole: CreateRoleDto = {
-  name: 'seller',
+  name: 'admin',
   description: 'role for admin',
 };
 
@@ -26,6 +27,7 @@ export class SeederService {
   constructor(
     private readonly userService: UserService,
     private readonly roleService: RoleService,
+    private readonly groupService: GroupService,
   ) {}
   async seedUser() {
     try {
@@ -57,5 +59,21 @@ export class SeederService {
   async seedRole() {
     this.seedSellerRole();
     this.seedAdminRole();
+  }
+
+  async seedGroup() {
+    try {
+      const role = await this.roleService.getAdmin();
+      const admin = await this.userService.getAdmin();
+      await this.groupService.alreadyAssignedGroup(admin, role);
+
+      await this.groupService.create({
+        role: role.id,
+        user: admin.id,
+      });
+      console.log('seeded admin group');
+    } catch (err) {
+      console.log(err.message);
+    }
   }
 }

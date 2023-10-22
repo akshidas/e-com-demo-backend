@@ -1,5 +1,4 @@
 import {
-  ConflictException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -24,6 +23,14 @@ export class UserRepo {
       throw new Error('failed to seed');
     }
   }
+
+  async getOneByMail(email: string) {
+    return await this.userModel.findOne({ email: email, deleted_at: null }, [
+      'firstName',
+      'email',
+    ]);
+  }
+
   async getAllUsers() {
     try {
       return await this.userModel.find();

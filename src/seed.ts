@@ -9,6 +9,7 @@ async function bootstrap() {
       try {
         await seeder.seedRole();
         await seeder.seedUser();
+        await seeder.seedGroup();
       } catch (err) {
         console.log(err);
       } finally {
