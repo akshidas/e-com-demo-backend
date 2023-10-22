@@ -10,6 +10,7 @@ import { ImagesModule } from './images/images.module';
 import { ProductsModule } from './products/products.module';
 import AuthMiddleWare from './shared/middlewares/auth.middleware';
 import { UserModule } from './user/user.module';
+import { GroupModule } from './group/group.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { UserModule } from './user/user.module';
       { path: 'products', module: ProductsModule },
       { path: 'images', module: ImagesModule },
     ]),
+    GroupModule,
   ],
   controllers: [AppController],
   providers: [AppService],
