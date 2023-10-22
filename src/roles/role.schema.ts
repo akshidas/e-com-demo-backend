@@ -1,10 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { now } from 'mongoose';
+import { Roles } from './types/role.type';
 
 @Schema()
 export class Role {
   @Prop({ required: true })
-  name: string;
+  name: Roles;
 
   @Prop({ required: true })
   description: string;

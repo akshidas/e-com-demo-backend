@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, now } from 'mongoose';
+import { Model } from 'mongoose';
 import EntityNotFound from 'src/shared/utils/errors/entity-not-found.error';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
