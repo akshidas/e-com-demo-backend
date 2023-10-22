@@ -7,13 +7,20 @@ import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './role.schema';
 
 @Injectable()
-export class RolesRepo {
+export class RoleRepo {
   constructor(
     @InjectModel(Role.name) private readonly roleModel: Model<Role>,
   ) {}
   async create(createRoleDto: CreateRoleDto) {
-    const role = new this.roleModel(createRoleDto);
-    return role.save();
+    try {
+      const role = new this.roleModel(createRoleDto);
+      return await role.save();
+    } catch (err) {
+      if (err.code === 11000) {
+        const [key, value] = Object.entries(err.keyValue).flat();
+        throw new Error(`role with ${key} ${value} already exists`);
+      }
+    }
   }
 
   async getAll() {

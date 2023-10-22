@@ -4,7 +4,7 @@ import { Roles } from './types/role.type';
 
 @Schema()
 export class Role {
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   name: Roles;
 
   @Prop({ required: true })

@@ -8,8 +8,6 @@ import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './category/category.module';
 import { ImagesModule } from './images/images.module';
 import { ProductsModule } from './products/products.module';
-import { RoleModule } from './roles/role.module';
-import { SeederModule } from './seeder/seeder.module';
 import AuthMiddleWare from './shared/middlewares/auth.middleware';
 import { UserModule } from './user/user.module';
 
@@ -32,7 +30,6 @@ import { UserModule } from './user/user.module';
     CategoryModule,
     ProductsModule,
     ImagesModule,
-    SeederModule,
     RouterModule.register([
       { path: 'users', module: UserModule },
       { path: 'auth', module: AuthModule },
@@ -40,7 +37,6 @@ import { UserModule } from './user/user.module';
       { path: 'products', module: ProductsModule },
       { path: 'images', module: ImagesModule },
     ]),
-    RoleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
