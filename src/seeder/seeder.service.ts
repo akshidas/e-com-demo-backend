@@ -14,11 +14,6 @@ const adminInfo: CreateUserDto = {
   password: 'root',
 };
 
-const roleInfo: CreateRoleDto = {
-  name: 'admin',
-  description: 'role for admin',
-};
-
 @Injectable()
 export class SeederService {
   constructor(
@@ -28,25 +23,20 @@ export class SeederService {
   async seedUser() {
     try {
       await this.userService.create(adminInfo);
-      console.log('finished seeding admin');
+      console.log('seeded admin user');
     } catch (err) {
-      if (err instanceof DuplicateKeyError) {
-        console.log('already seeded');
-        return;
-      }
+      console.log(err.message);
     }
   }
 
-  async seedRole() {
+  async seedRole(role: CreateRoleDto, message: string) {
     try {
-      await this.roleService.create(roleInfo);
-      console.log('finished seeding roles');
+      await this.roleService.create(role);
+      console.log(message);
     } catch (err) {
       if (err instanceof DuplicateKeyError) {
         console.log('already seeded');
-        return;
       }
-
       console.log(err.message);
     }
   }

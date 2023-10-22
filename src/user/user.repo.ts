@@ -38,8 +38,7 @@ export class UserRepo {
       return await createdUser.save();
     } catch (err) {
       if (err.code === 11000) {
-        const [key, value] = Object.entries(err.keyValue).flat();
-        throw new ConflictException(`user with ${key} ${value} already exists`);
+        throw new DuplicateKeyError(err);
       }
 
       throw new InternalServerErrorException(err.message);
