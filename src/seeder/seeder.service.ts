@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRoleDto } from 'src/roles/dto/create-role.dto';
 import { RoleService } from 'src/roles/roles.service';
-import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UserService } from 'src/user/user.service';
-import _users from './data/_user.json';
 
 const adminInfo: CreateUserDto = {
   email: 'admin@gmail.com',
@@ -12,6 +10,15 @@ const adminInfo: CreateUserDto = {
   lastName: 'Ecom',
   mobile: '0123456789',
   password: 'root',
+};
+
+const sellerRole: CreateRoleDto = {
+  name: 'seller',
+  description: 'role for admin',
+};
+const adminRole: CreateRoleDto = {
+  name: 'seller',
+  description: 'role for admin',
 };
 
 @Injectable()
@@ -29,15 +36,26 @@ export class SeederService {
     }
   }
 
-  async seedRole(role: CreateRoleDto, message: string) {
+  private async seedSellerRole() {
     try {
-      await this.roleService.create(role);
-      console.log(message);
+      await this.roleService.create(sellerRole);
+      console.log('seeded seller role');
     } catch (err) {
-      if (err instanceof DuplicateKeyError) {
-        console.log('already seeded');
-      }
       console.log(err.message);
     }
+  }
+
+  private async seedAdminRole() {
+    try {
+      await this.roleService.create(adminRole);
+      console.log('seeded admin role');
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  async seedRole() {
+    this.seedSellerRole();
+    this.seedAdminRole();
   }
 }
