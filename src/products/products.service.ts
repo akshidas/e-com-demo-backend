@@ -7,7 +7,9 @@ import { ProductsRepo } from './products.repo';
 @Injectable()
 export class ProductsService {
   constructor(private readonly productRepo: ProductsRepo) {}
-
+  async insertMany(productList: CreateProductsDto[]) {
+    return this.productRepo.insertMany(productList);
+  }
   async getAll() {
     return this.productRepo.getAll();
   }

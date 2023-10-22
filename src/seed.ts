@@ -1,18 +1,19 @@
 import { NestFactory } from '@nestjs/core';
-import { SeederModule } from './seeder/seeder.module';
+import { AppModule } from './app.module';
 import { SeederService } from './seeder/seeder.service';
 
 async function bootstrap() {
-  NestFactory.createApplicationContext(SeederModule)
-    .then((appContext) => {
+  NestFactory.createApplicationContext(AppModule)
+    .then(async (appContext) => {
       const seeder = appContext.get(SeederService);
-      seeder
-        .seedUser()
-        .then(() => {})
-        .catch((error) => {
-          throw error;
-        })
-        .finally(() => appContext.close());
+      try {
+        await seeder.seedUser();
+        await seeder.seedProduct();
+      } catch (err) {
+        throw err;
+      } finally {
+        appContext.close();
+      }
     })
     .catch((error) => {
       throw error;

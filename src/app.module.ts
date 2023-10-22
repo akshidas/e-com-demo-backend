@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { CategoryModule } from './category/category.module';
 import { ImagesModule } from './images/images.module';
 import { ProductsModule } from './products/products.module';
+import { SeederModule } from './seeder/seeder.module';
 import AuthMiddleWare from './shared/middlewares/auth.middleware';
 import { UserModule } from './user/user.module';
 
@@ -18,11 +19,10 @@ import { UserModule } from './user/user.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (config: ConfigService) => {
-        const DB_NAME = config.get('DATABASE_NAME');
-        console.log(DB_NAME);
+        const DB_URL = config.get('DATABASE_URL');
         return {
           autoIndex: true,
-          uri: `mongodb://localhost/${DB_NAME}`,
+          uri: DB_URL,
         };
       },
     }),
@@ -31,6 +31,7 @@ import { UserModule } from './user/user.module';
     CategoryModule,
     ProductsModule,
     ImagesModule,
+    SeederModule,
     RouterModule.register([
       { path: 'users', module: UserModule },
       { path: 'auth', module: AuthModule },
