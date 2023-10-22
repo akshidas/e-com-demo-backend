@@ -1,0 +1,132 @@
+[
+  {
+    "name": "OCTINOXATE",
+    "sku": "56d4434d-7a65-4579-8b05-a5bff0e914ef",
+    "images": [
+      {
+        "$oid": "65340aa2fc13ae4ff0c76cc8"
+      }
+    ],
+    "price": 48,
+    "category_id": {
+      "$oid": "65340aa2fc13ae4ff0c76cc9"
+    }
+  },
+  {
+    "name": "Methylprednisolone",
+    "sku": "cb05359f-7b0c-4357-b8b0-91ff099e35fe",
+    "images": [
+      {
+        "$oid": "65340aa2fc13ae4ff0c76cca"
+      }
+    ],
+    "price": 57,
+    "category_id": {
+      "$oid": "65340aa2fc13ae4ff0c76ccb"
+    }
+  },
+  {
+    "name": "Acetaminophen",
+    "sku": "737bead3-ecb8-41c9-8e80-a0f9c00b951b",
+    "images": [
+      {
+        "$oid": "65340aa2fc13ae4ff0c76ccc"
+      }
+    ],
+    "price": 21,
+    "category_id": {
+      "$oid": "65340aa2fc13ae4ff0c76ccd"
+    }
+  },
+  {
+    "name": "SALICYLIC ACID",
+    "sku": "8289e591-9048-4cbf-bbc2-8c95012bad5e",
+    "images": [
+      {
+        "$oid": "65340aa2fc13ae4ff0c76cce"
+      }
+    ],
+    "price": 52,
+    "category_id": {
+      "$oid": "65340aa2fc13ae4ff0c76ccf"
+    }
+  },
+  {
+    "name": "ETHYL ALCOHOL",
+    "sku": "886ac7db-55fc-4423-99bd-195c0ab57125",
+    "images": [
+      {
+        "$oid": "65340aa2fc13ae4ff0c76cd0"
+      }
+    ],
+    "price": 96,
+    "category_id": {
+      "$oid": "65340aa2fc13ae4ff0c76cd1"
+    }
+  },
+  {
+    "name": "Prednisone",
+    "sku": "4266c5b0-d0a9-49f2-9b98-0569e8d00f90",
+    "images": [
+      {
+        "$oid": "65340aa2fc13ae4ff0c76cd2"
+      }
+    ],
+    "price": 66,
+    "category_id": {
+      "$oid": "65340aa2fc13ae4ff0c76cd3"
+    }
+  },
+  {
+    "name": "Menthol",
+    "sku": "9e217733-a9c3-4220-a147-0f8d9cd96dde",
+    "images": [
+      {
+        "$oid": "65340aa2fc13ae4ff0c76cd4"
+      }
+    ],
+    "price": 79,
+    "category_id": {
+      "$oid": "65340aa2fc13ae4ff0c76cd5"
+    }
+  },
+  {
+    "name": "Apis mellifica, Cantharis, Graphites, Natrun muriaticum, Rhus glabra, Rhus toxicodendron, Thus venenata, Urtica dioica,",
+    "sku": "07a98f1f-62c4-407a-a866-38c150a27ec2",
+    "images": [
+      {
+        "$oid": "65340aa2fc13ae4ff0c76cd6"
+      }
+    ],
+    "price": 16,
+    "category_id": {
+      "$oid": "65340aa2fc13ae4ff0c76cd7"
+    }
+  },
+  {
+    "name": "Metronidazole",
+    "sku": "fdeac555-1b44-4419-80a3-a63405e85868",
+    "images": [
+      {
+        "$oid": "65340aa2fc13ae4ff0c76cd8"
+      }
+    ],
+    "price": 88,
+    "category_id": {
+      "$oid": "65340aa2fc13ae4ff0c76cd9"
+    }
+  },
+  {
+    "name": "PHYTOLACCA AMERICANA ROOT",
+    "sku": "06bd0503-4a8d-41a4-888c-b74bba7445b4",
+    "images": [
+      {
+        "$oid": "65340aa2fc13ae4ff0c76cda"
+      }
+    ],
+    "price": 51,
+    "category_id": {
+      "$oid": "65340aa2fc13ae4ff0c76cdb"
+    }
+  }
+]

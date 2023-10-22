@@ -22,6 +22,10 @@ export class ProductsRepo {
     @InjectModel(Product.name) private productModel: Model<Product>,
   ) {}
 
+  async insertMany(productList: CreateProductsDto[]) {
+    return this.productModel.insertMany(productList);
+  }
+
   async getAll() {
     return this.productModel.find({ deleted_at: null }, [
       '-deleted_at',
