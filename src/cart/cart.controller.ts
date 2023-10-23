@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   InternalServerErrorException,
   NotFoundException,
@@ -9,6 +10,8 @@ import {
   Put,
   Req,
 } from '@nestjs/common';
+import CartNotFoundError from 'src/shared/utils/errors/cart-not-found.error';
+import EntityNotFound from 'src/shared/utils/errors/entity-not-found.error';
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
@@ -49,9 +52,22 @@ export class CartController {
       if (cart) {
         return { data: cart };
       }
-      throw new NotFoundException('cart not found');
     } catch (err) {
-      console.log(err);
+      if (err instanceof CartNotFoundError) {
+        throw new NotFoundException(err.message);
+      }
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
+  @Delete(':id')
+  async deleteCart(@Param('id') id: string) {
+    try {
+      const cart = await this.cartService.deleteCart(id);
+      if (cart) {
+        return { data: cart };
+      }
+    } catch (err) {
       throw new InternalServerErrorException(err.message);
     }
   }

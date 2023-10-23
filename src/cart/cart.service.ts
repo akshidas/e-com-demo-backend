@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import CartNotFoundError from 'src/shared/utils/errors/cart-not-found.error';
 import { CartRepo } from './cart.repo';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
@@ -6,9 +7,11 @@ import { UpdateCartDto } from './dto/update-cart.dto';
 @Injectable()
 export class CartService {
   constructor(private readonly cartRepo: CartRepo) {}
+
   async getCartByUserId(uid: string) {
     return await this.cartRepo.getAllOfUser(uid);
   }
+
   async create(user: string, createCartDto: CreateCartDto) {
     const { product } = createCartDto;
     const cart = await this.cartRepo.cartEntryExist(user, product);
@@ -20,7 +23,9 @@ export class CartService {
   }
 
   async updateCart(id: string, updateCartDto: UpdateCartDto) {
-    return await this.cartRepo.updatedCartCount(id, updateCartDto);
+    const cart = await this.cartRepo.updatedCartCount(id, updateCartDto);
+    if (cart) return cart;
+    throw new CartNotFoundError(id);
   }
 
   async deleteCart(id: string) {
