@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NestMiddleware } from '@nestjs/common';
+import { Injectable, NestMiddleware, NotFoundException } from '@nestjs/common';
 import { NextFunction, Response } from 'express';
 import { CartService } from '../cart.service';
 
@@ -11,7 +11,7 @@ class UserOwnsCart implements NestMiddleware {
       req.id,
     );
     if (!cartBelongsToUser)
-      throw new ForbiddenException('this do not belong to you');
+      throw new NotFoundException(`cart with id ${req.params.id} not found`);
     next();
   }
 }
