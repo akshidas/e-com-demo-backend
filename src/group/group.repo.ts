@@ -20,4 +20,9 @@ export class GroupRepo {
     });
     return Boolean(alreadyAssignedTheGroup);
   }
+
+  async isAdmin(uid: string, rid: string) {
+    const exists = await this.groupModel.exists({ user: uid, role: rid });
+    return Boolean(exists);
+  }
 }

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { RoleModule } from 'src/roles/role.module';
 import { Role, RoleSchema } from 'src/roles/role.schema';
 import { User, UserSchema } from 'src/user/user.schema';
 import { GroupRepo } from './group.repo';
@@ -13,6 +14,7 @@ import { GroupService } from './group.service';
       { name: User.name, schema: UserSchema },
       { name: Role.name, schema: RoleSchema },
     ]),
+    RoleModule,
   ],
   providers: [GroupService, GroupRepo],
   exports: [GroupRepo, GroupService],

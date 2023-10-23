@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { GroupModule } from 'src/group/group.module';
 import { UserRepo } from 'src/user/user.repo';
 import { User, UserSchema } from 'src/user/user.schema';
 import { UserService } from 'src/user/user.service';
@@ -17,6 +18,7 @@ import { AuthService } from './auth.service';
         schema: AuthSchema,
       },
     ]),
+    GroupModule,
   ],
   controllers: [AuthController],
   providers: [UserRepo, UserService, AuthService, AuthRepo],

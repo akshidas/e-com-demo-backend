@@ -15,7 +15,7 @@ const adminInfo: CreateUserDto = {
 
 const sellerRole: CreateRoleDto = {
   name: 'seller',
-  description: 'role for admin',
+  description: 'role for seller',
 };
 const adminRole: CreateRoleDto = {
   name: 'admin',

@@ -27,7 +27,7 @@ export class UserService {
   }
   async create(createUserDto: CreateUserDto) {
     const createdUser = await this.userRepo.create(createUserDto);
-    return await genJwt({ id: createdUser.id });
+    return await genJwt({ id: createdUser.id, isAdmin: false });
   }
 
   async getById(id: string) {
