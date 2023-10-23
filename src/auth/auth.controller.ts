@@ -4,7 +4,12 @@ import {
   InternalServerErrorException,
   Post,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiInternalServerErrorResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import LoginUserDto from './login-user.dto';
 
@@ -13,6 +18,13 @@ import LoginUserDto from './login-user.dto';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @ApiOkResponse({
+    description: 'successfully logged in the user',
+  })
+  @ApiInternalServerErrorResponse({
+    description: 'Something went wrong with the server',
+  })
+  @ApiUnauthorizedResponse({ description: 'Invalid credentials passed' })
   @Post('login')
   async login(@Body() loginUserDto: LoginUserDto) {
     const token = await this.authService.login(loginUserDto);

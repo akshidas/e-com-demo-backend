@@ -4,12 +4,12 @@ import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 class LoginUserDto {
   @IsEmail()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({ description: 'email used to register' })
   email: string;
 
   @IsNotEmpty()
   @IsString()
-  @ApiProperty()
+  @ApiProperty({ description: 'password used while registering' })
   password: string;
 }
 export default LoginUserDto;
