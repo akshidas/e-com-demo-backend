@@ -6,15 +6,17 @@ import { UpdateCartDto } from './dto/update-cart.dto';
 @Injectable()
 export class CartService {
   constructor(private readonly cartRepo: CartRepo) {}
-
-  async create(createCartDto: CreateCartDto) {
-    const { product, user } = createCartDto;
+  async getCartByUserId(uid: string) {
+    return await this.cartRepo.getAllOfUser(uid);
+  }
+  async create(user: string, createCartDto: CreateCartDto) {
+    const { product } = createCartDto;
     const cart = await this.cartRepo.cartEntryExist(user, product);
     if (cart) {
       const { id, quantity } = cart;
       return await this.updateCart(id, { quantity: quantity + 1 });
     }
-    return await this.cartRepo.create(createCartDto);
+    return await this.cartRepo.create({ ...createCartDto, user });
   }
 
   async updateCart(id: string, updateCartDto: UpdateCartDto) {

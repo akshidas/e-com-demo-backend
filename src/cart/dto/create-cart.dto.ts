@@ -1,13 +1,13 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateCartDto {
   @IsNotEmpty()
   @IsString()
   product: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  user: string;
+  user?: string;
 
   @IsNotEmpty()
   @IsNumber({ maxDecimalPlaces: 0 })

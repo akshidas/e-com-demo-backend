@@ -29,16 +29,20 @@ export class CartRepo {
   }
 
   async updatedCartCount(id: string, updateCartDto: UpdateCartDto) {
-    const updatedCart = await this.cartModel.findOneAndUpdate(
-      { id: id },
-      {
-        ...updateCartDto,
-        updated_at: now(),
-      },
-      { returnOriginal: false },
-    );
-
-    return updatedCart;
+    try {
+      const updatedCart = await this.cartModel.findOneAndUpdate(
+        { _id: id },
+        {
+          ...updateCartDto,
+          updated_at: now(),
+        },
+        { returnOriginal: false },
+      );
+      return updatedCart;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   }
 
   async deleteCart(id: string) {
