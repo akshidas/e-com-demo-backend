@@ -4,9 +4,12 @@ import {
   InternalServerErrorException,
   Post,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import LoginUserDto from './login-user.dto';
 
+@ApiTags('auth')
+@ApiBearerAuth()
 @Controller()
 export class AuthController {
   constructor(private authService: AuthService) {}

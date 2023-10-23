@@ -36,7 +36,13 @@ async function bootstrap() {
     .setTitle('E-com Demo')
     .setDescription('The E-com Demo API description')
     .setVersion('1.0')
+    .addTag('auth')
     .addTag('users')
+    .addTag('addresses')
+    .addTag('categories')
+    .addTag('products')
+    .addTag('images')
+    .addTag('carts')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);

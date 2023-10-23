@@ -11,12 +11,15 @@ import {
   Put,
   UsePipes,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
 import { CreateProductsDto } from './dto/create-products.dto';
 import { UpdateProductDto } from './dto/update-products.dto';
 import { ConvertSlug } from './product-slug-transform.pipe';
 import { ProductsService } from './products.service';
 
+@ApiTags('products')
+@ApiBearerAuth()
 @Controller({
   version: '1',
 })
