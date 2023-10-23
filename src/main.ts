@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationError } from 'class-validator';
 import { join } from 'path';
 import { AppModule } from './app.module';
@@ -30,6 +31,23 @@ async function bootstrap() {
       },
     }),
   );
+
+  const config = new DocumentBuilder()
+    .setTitle('E-com Demo')
+    .setDescription('The E-com Demo API description')
+    .setVersion('1.0')
+    .addTag('auth')
+    .addTag('users')
+    .addTag('addresses')
+    .addTag('categories')
+    .addTag('products')
+    .addTag('images')
+    .addTag('carts')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
   await app.listen(3000);
 }
 bootstrap();

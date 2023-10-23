@@ -6,9 +6,12 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
 import { ImageService } from './image.service';
 
+@ApiTags('images')
+@ApiBearerAuth()
 @Controller({
   version: '1',
 })

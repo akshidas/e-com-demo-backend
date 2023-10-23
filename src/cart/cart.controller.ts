@@ -10,11 +10,14 @@ import {
   Put,
   Req,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import CartNotFoundError from 'src/shared/utils/errors/cart-not-found.error';
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 
+@ApiTags('carts')
+@ApiBearerAuth()
 @Controller({ version: '1' })
 export class CartController {
   constructor(private readonly cartService: CartService) {}

@@ -11,16 +11,26 @@ import {
   Put,
   Req,
 } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
+@ApiTags('users')
+@ApiBearerAuth()
 @Controller({
   version: '1',
 })
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @ApiOkResponse({ description: 'users retrieved successfully' })
   @Get()
   async getAll() {
     return this.userService.getAll();
@@ -38,6 +48,9 @@ export class UserController {
     return { data: user };
   }
 
+  @ApiCreatedResponse({
+    description: 'successfully created user',
+  })
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     try {
@@ -48,7 +61,7 @@ export class UserController {
       if (err instanceof InternalServerErrorException)
         throw new InternalServerErrorException(err.message);
 
-      if (err instanceof ConflictException)
+      if (err instanceof DuplicateKeyError)
         throw new ConflictException(err.message);
 
       throw new HttpException('Something went wrong', 500);
