@@ -17,6 +17,7 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
@@ -60,7 +61,7 @@ export class UserController {
       if (err instanceof InternalServerErrorException)
         throw new InternalServerErrorException(err.message);
 
-      if (err instanceof ConflictException)
+      if (err instanceof DuplicateKeyError)
         throw new ConflictException(err.message);
 
       throw new HttpException('Something went wrong', 500);
