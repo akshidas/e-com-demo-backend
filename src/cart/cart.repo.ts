@@ -19,6 +19,11 @@ export class CartRepo {
     return carts;
   }
 
+  async checkCartExistsWithUserId(id: string, uid: string) {
+    const cart = await this.cartModel.exists({ _id: id, user: uid });
+    return Boolean(cart);
+  }
+
   async cartEntryExist(uid: string, pid: string) {
     const exists = await this.cartModel.findOne({
       user: uid,

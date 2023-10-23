@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CartController } from './cart.controller';
 import { CartRepo } from './cart.repo';
 import { Cart, CartSchema } from './cart.schema';
 import { CartService } from './cart.service';
+import UserOwnsCart from './middlewares/user-owns-cart.middleware';
 
 @Module({
   imports: [
@@ -12,4 +13,8 @@ import { CartService } from './cart.service';
   controllers: [CartController],
   providers: [CartRepo, CartService],
 })
-export class CartModule {}
+export class CartModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(UserOwnsCart).forRoutes('v1/carts/:id');
+  }
+}

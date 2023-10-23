@@ -8,6 +8,10 @@ import { UpdateCartDto } from './dto/update-cart.dto';
 export class CartService {
   constructor(private readonly cartRepo: CartRepo) {}
 
+  async cartBelongToUser(id: string, uid: string) {
+    return await this.cartRepo.checkCartExistsWithUserId(id, uid);
+  }
+
   async getCartByUserId(uid: string) {
     return await this.cartRepo.getAllOfUser(uid);
   }

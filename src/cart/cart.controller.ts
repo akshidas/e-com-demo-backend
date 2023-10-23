@@ -11,7 +11,6 @@ import {
   Req,
 } from '@nestjs/common';
 import CartNotFoundError from 'src/shared/utils/errors/cart-not-found.error';
-import EntityNotFound from 'src/shared/utils/errors/entity-not-found.error';
 import { CartService } from './cart.service';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
