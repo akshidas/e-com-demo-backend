@@ -8,43 +8,48 @@ import {
   IsString,
   Matches,
 } from 'class-validator';
-import { Types } from 'mongoose';
 import { Image } from 'src/images/image.schema';
 
 export class CreateProductsDto {
   @IsNotEmpty()
   @IsString()
-  @ApiProperty()
+  @ApiProperty({ description: 'Name of the product', example: 'Product One' })
   name: string;
 
   @IsNotEmpty()
   @IsString()
-  @ApiProperty()
+  @ApiProperty({ description: 'Identifier of the product' })
   sku: string;
 
   @IsArray()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({ description: 'Id arrays of product images' })
   images: Image[];
 
   @IsNotEmpty()
   @IsNumber()
-  @ApiProperty()
+  @ApiProperty({ description: 'Price of the product' })
   price: number;
 
   @IsOptional()
   @IsString()
   @Matches(/^[a-z0-9-]+$/)
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Slug that will be used to identify the product',
+    example: 'product-one',
+  })
   slug: string;
 
   @IsBoolean()
   @IsOptional()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'This property identifies of the category is active or not',
+    default: true,
+  })
   status: boolean;
 
   @IsNotEmpty()
   @IsString()
-  @ApiProperty()
+  @ApiProperty({ description: 'Id of the category this product falls under' })
   category_id: string;
 }
