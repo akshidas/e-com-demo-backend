@@ -10,17 +10,26 @@ import {
 export class CreateCategoryDto {
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Name of the category',
+    example: 'Category Test',
+  })
   name: string;
 
   @IsString()
   @IsOptional()
   @Matches(/^[a-z0-9-]+$/)
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Slug that will be used to identify the category',
+    example: 'category-test',
+  })
   slug: string;
 
   @IsBoolean()
   @IsOptional()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'This property identifies of the category is active or not',
+    default: true,
+  })
   status: boolean;
 }

@@ -1,24 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsBoolean, IsOptional, IsString, Matches } from 'class-validator';
-import { Category } from '../category.schema';
+import { PartialType } from '@nestjs/swagger';
+import { CreateCategoryDto } from './create-category.dto';
 
-export class UpdateCategoryDto implements Category {
-  @IsString()
-  @IsOptional()
-  @ApiProperty()
-  name: string;
-
-  @IsString()
-  @IsOptional()
-  @Matches(/^[a-z0-9-]+$/)
-  @ApiProperty()
-  slug: string;
-
-  @IsBoolean()
-  @IsOptional()
-  @ApiProperty()
-  status: boolean;
-
+export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {
   deleted_at?: Date;
   updated_at?: Date;
 }
