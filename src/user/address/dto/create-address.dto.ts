@@ -4,21 +4,27 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class CreateAddressDto {
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({ description: 'User address' })
   address: string;
 
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'First name of the user who this address belongs to',
+  })
   firstName: string;
 
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Last name of the user who this address belongs to',
+  })
   lastName: string;
 
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Pincode for where the address is located',
+  })
   pincode: string;
 }
