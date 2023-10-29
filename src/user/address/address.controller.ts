@@ -13,8 +13,7 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Types } from 'mongoose';
 import { AddressService } from './address.service';
-import { CreateAddressDto } from './dto/create-address.dto';
-import { UpdateAddressDto } from './dto/update-address.dto';
+import { CreateAddressDto, UpdateAddressDto } from './dto/address.dto';
 @ApiTags('addresses')
 @ApiBearerAuth()
 @Controller('address')

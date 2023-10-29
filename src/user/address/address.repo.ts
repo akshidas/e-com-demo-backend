@@ -6,8 +6,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Address } from './address.schema';
-import { CreateAddressDto } from './dto/create-address.dto';
-import { UpdateAddressDto } from './dto/update-address.dto';
+import { CreateAddressDto, UpdateAddressDto } from './dto/address.dto';
 
 @Injectable()
 export class AddressRepo {

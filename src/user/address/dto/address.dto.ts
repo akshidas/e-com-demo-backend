@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateAddressDto {
@@ -28,3 +28,5 @@ export class CreateAddressDto {
   })
   pincode: string;
 }
+
+export class UpdateAddressDto extends PartialType(CreateAddressDto) {}
