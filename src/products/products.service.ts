@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { isValidObjectId, now } from 'mongoose';
-import { CreateProductsDto } from './dto/create-products.dto';
-import { UpdateProductDto } from './dto/update-products.dto';
+import { CreateProductsDto, UpdateProductDto } from './dto/products.dto';
 import { ProductsRepo } from './products.repo';
 
 @Injectable()

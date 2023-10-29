@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
   IsArray,
   IsBoolean,
@@ -52,4 +52,8 @@ export class CreateProductsDto {
   @IsString()
   @ApiProperty({ description: 'Id of the category this product falls under' })
   category_id: string;
+}
+
+export class UpdateProductDto extends PartialType(CreateProductsDto) {
+  deleted_at?: Date;
 }

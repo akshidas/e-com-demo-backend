@@ -1,5 +1,5 @@
 import { Injectable, PipeTransform } from '@nestjs/common';
-import { CreateProductsDto } from './dto/create-products.dto';
+import { CreateProductsDto } from './dto/products.dto';
 
 @Injectable()
 export class ConvertSlug

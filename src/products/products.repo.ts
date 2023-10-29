@@ -7,8 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
 import UpdateFailedError from 'src/shared/utils/errors/update-failed.error';
-import { CreateProductsDto } from './dto/create-products.dto';
-import { UpdateProductDto } from './dto/update-products.dto';
+import { CreateProductsDto, UpdateProductDto } from './dto/products.dto';
 import { Product } from './products.schema';
 
 type Filter = {
