@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import CartNotFoundError from 'src/shared/utils/errors/cart-not-found.error';
 import { CartRepo } from './cart.repo';
-import { CreateCartDto } from './dto/create-cart.dto';
-import { UpdateCartDto } from './dto/update-cart.dto';
+import { CreateCartDto, UpdateCartDto } from './dto/cart.dto';
 
 @Injectable()
 export class CartService {

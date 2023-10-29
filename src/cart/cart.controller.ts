@@ -13,8 +13,7 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import CartNotFoundError from 'src/shared/utils/errors/cart-not-found.error';
 import { CartService } from './cart.service';
-import { CreateCartDto } from './dto/create-cart.dto';
-import { UpdateCartDto } from './dto/update-cart.dto';
+import { CreateCartDto, UpdateCartDto } from './dto/cart.dto';
 
 @ApiTags('carts')
 @ApiBearerAuth()

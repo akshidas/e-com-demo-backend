@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType, PickType } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateCartDto {
@@ -17,3 +17,7 @@ export class CreateCartDto {
   @ApiProperty({ description: 'Quantity of the product to be added to cart' })
   quantity: number;
 }
+
+export class UpdateCartDto extends PartialType(
+  PickType(CreateCartDto, ['quantity']),
+) {}
