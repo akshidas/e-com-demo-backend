@@ -5,8 +5,7 @@ import {
 } from '@nestjs/common';
 import EntityNotFound from 'src/shared/utils/errors/entity-not-found.error';
 import genJwt from 'src/shared/utils/gen-jwt';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { UserRepo } from './user.repo';
 
 @Injectable()

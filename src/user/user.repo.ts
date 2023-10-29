@@ -6,8 +6,7 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, now } from 'mongoose';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { User } from './user.schema';
 
 @Injectable()
