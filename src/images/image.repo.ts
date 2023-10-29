@@ -1,7 +1,7 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateImageDto } from './dto/create-image.dto';
+import { CreateImageDto } from './dto/image.dto';
 import { Image } from './image.schema';
 
 @Injectable()
