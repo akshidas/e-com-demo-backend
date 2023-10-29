@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { isValidObjectId } from 'mongoose';
 import { CategoryRepo } from './category.repo';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CreateCategoryDto, UpdateCategoryDto } from './dto/category.dto';
 
 @Injectable()
 export class CategoryService {

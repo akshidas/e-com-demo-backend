@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsNotEmpty,
@@ -32,4 +32,9 @@ export class CreateCategoryDto {
     default: true,
   })
   status: boolean;
+}
+
+export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {
+  deleted_at?: Date;
+  updated_at?: Date;
 }
