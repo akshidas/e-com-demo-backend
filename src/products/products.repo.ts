@@ -73,7 +73,7 @@ export class ProductsRepo {
     return this.findOne({ slug: slug });
   }
 
-  async createProduct(createProductDto: CreateProductsDto) {
+  async createProduct(createProductDto: Product) {
     try {
       const newProduct = new this.productModel(createProductDto);
       const savedProduct = await newProduct.save();

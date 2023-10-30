@@ -1,7 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { plainToClass } from 'class-transformer';
 import { isValidObjectId, now } from 'mongoose';
 import { CreateProductsDto, UpdateProductDto } from './dto/products.dto';
 import { ProductsRepo } from './products.repo';
+import { Product } from './products.schema';
 
 @Injectable()
 export class ProductsService {
@@ -22,7 +24,9 @@ export class ProductsService {
   }
 
   async createProduct(createProductDto: CreateProductsDto) {
-    return this.productRepo.createProduct(createProductDto);
+    const product = plainToClass(Product, createProductDto);
+    const createdProduct = this.productRepo.createProduct(product);
+    return createdProduct;
   }
 
   private async identifyParamAndUpdate(
