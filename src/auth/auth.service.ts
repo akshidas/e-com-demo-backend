@@ -8,7 +8,7 @@ import genJwt from 'src/shared/utils/gen-jwt';
 import verifyPassword from 'src/shared/utils/verify-password';
 import { UserService } from 'src/user/user.service';
 import { AuthRepo } from './auth.repo';
-import LoginUserDto from './dto/login.dto';
+import LoginUserRequest from './dto/login.dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -17,7 +17,7 @@ export class AuthService {
     private readonly groupService: GroupService,
   ) {}
 
-  async login(loginUserDto: LoginUserDto) {
+  async login(loginUserDto: LoginUserRequest) {
     const { password, id } = await this.userService.getUserPasswordByEmail(
       loginUserDto.email,
     );

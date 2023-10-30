@@ -11,8 +11,11 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import LoginUserDto from './dto/login.dto';
+import LoginUserRequest from './dto/login.dto';
 
+class LoggedInResponse {
+  data: string;
+}
 @ApiTags('auth')
 @Controller({ version: '1' })
 export class AuthController {
@@ -26,7 +29,9 @@ export class AuthController {
   })
   @ApiUnauthorizedResponse({ description: 'Invalid credentials passed' })
   @Post('login')
-  async login(@Body() loginUserDto: LoginUserDto) {
+  async login(
+    @Body() loginUserDto: LoginUserRequest,
+  ): Promise<LoggedInResponse> {
     const token = await this.authService.login(loginUserDto);
     if (token) {
       return { data: token };
