@@ -7,6 +7,7 @@ import {
 import {
   ApiInternalServerErrorResponse,
   ApiOkResponse,
+  ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -21,6 +22,7 @@ class LoggedInResponse {
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @ApiOperation({ summary: 'get the access token of a user' })
   @ApiOkResponse({
     description: 'successfully logged in the user',
   })
