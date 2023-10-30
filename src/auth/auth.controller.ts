@@ -12,17 +12,14 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import LoginUserRequest from './dto/login.dto';
+import LoginUserRequest, { LoggedInSuccessResponse } from './dto/login.dto';
 
-class LoggedInResponse {
-  data: string;
-}
 @ApiTags('auth')
 @Controller({ version: '1' })
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @ApiOperation({ summary: 'get the access token of a user' })
+  @ApiOperation({ summary: 'get the access token of a user' , })
   @ApiOkResponse({
     description: 'successfully logged in the user',
   })
@@ -33,7 +30,7 @@ export class AuthController {
   @Post('login')
   async login(
     @Body() loginUserDto: LoginUserRequest,
-  ): Promise<LoggedInResponse> {
+  ): Promise<LoggedInSuccessResponse> {
     const token = await this.authService.login(loginUserDto);
     if (token) {
       return { data: token };

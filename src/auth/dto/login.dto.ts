@@ -12,4 +12,9 @@ class LoginUserRequest {
   @ApiProperty({ description: 'password used while registering' })
   password: string;
 }
+
+export class LoggedInSuccessResponse {
+  data: string;
+}
+
 export default LoginUserRequest;
