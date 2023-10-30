@@ -18,7 +18,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { CreateUserRequest, UpdateUserRequest } from './dto/user.dto';
 import { UserService } from './user.service';
 
 @ApiTags('users')
@@ -42,8 +42,11 @@ export class UserController {
   }
 
   @Put('profile')
-  async updateProfile(@Req() req, @Body() UpdateUserDto: UpdateUserDto) {
-    const user = await this.userService.updateUser(req.id, UpdateUserDto);
+  async updateProfile(
+    @Req() req,
+    @Body() UpdateUserRequest: UpdateUserRequest,
+  ) {
+    const user = await this.userService.updateUser(req.id, UpdateUserRequest);
     return { data: user };
   }
 
@@ -51,9 +54,9 @@ export class UserController {
     description: 'successfully created user',
   })
   @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() CreateUserRequest: CreateUserRequest) {
     try {
-      const token = await this.userService.create(createUserDto);
+      const token = await this.userService.create(CreateUserRequest);
 
       return { data: token };
     } catch (err) {

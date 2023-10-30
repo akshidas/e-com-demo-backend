@@ -6,13 +6,13 @@ import {
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, now } from 'mongoose';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { CreateUserRequest, UpdateUserRequest } from './dto/user.dto';
 import { User } from './user.schema';
 
 @Injectable()
 export class UserRepo {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
-  async createMany(usersList: CreateUserDto[]) {
+  async createMany(usersList: CreateUserRequest[]) {
     try {
       await this.userModel.insertMany(usersList);
     } catch (err) {
@@ -38,9 +38,9 @@ export class UserRepo {
     }
   }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(CreateUserRequest: CreateUserRequest) {
     try {
-      const createdUser = new this.userModel(createUserDto);
+      const createdUser = new this.userModel(CreateUserRequest);
       return await createdUser.save();
     } catch (err) {
       if (err.code === 11000) {
@@ -64,10 +64,10 @@ export class UserRepo {
     return await this.userModel.findOne({ email }, ['password']);
   }
 
-  async updateUser(id: string, updateUserDto: UpdateUserDto) {
+  async updateUser(id: string, UpdateUserRequest: UpdateUserRequest) {
     const updatedUser = await this.userModel.findOneAndUpdate(
       { _id: id },
-      { ...updateUserDto, updated_at: now() },
+      { ...UpdateUserRequest, updated_at: now() },
     );
 
     if (updatedUser) {

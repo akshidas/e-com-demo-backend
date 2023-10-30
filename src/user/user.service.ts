@@ -5,14 +5,14 @@ import {
 } from '@nestjs/common';
 import EntityNotFound from 'src/shared/utils/errors/entity-not-found.error';
 import genJwt from 'src/shared/utils/gen-jwt';
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { CreateUserRequest, UpdateUserRequest } from './dto/user.dto';
 import { UserRepo } from './user.repo';
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepo: UserRepo) {}
 
-  async insertMultipleUsers(usersList: CreateUserDto[]) {
+  async insertMultipleUsers(usersList: CreateUserRequest[]) {
     return this.userRepo.createMany(usersList);
   }
 
@@ -24,8 +24,8 @@ export class UserService {
   async getAll() {
     return this.userRepo.getAllUsers();
   }
-  async create(createUserDto: CreateUserDto) {
-    const createdUser = await this.userRepo.create(createUserDto);
+  async create(CreateUserRequest: CreateUserRequest) {
+    const createdUser = await this.userRepo.create(CreateUserRequest);
     return await genJwt({ id: createdUser.id, isAdmin: false });
   }
 
@@ -35,9 +35,9 @@ export class UserService {
     return user;
   }
 
-  async updateUser(id: string, updateUserDto: UpdateUserDto) {
+  async updateUser(id: string, UpdateUserRequest: UpdateUserRequest) {
     try {
-      return this.userRepo.updateUser(id, updateUserDto);
+      return this.userRepo.updateUser(id, UpdateUserRequest);
     } catch (err) {
       throw new InternalServerErrorException('failed to update user');
     }
