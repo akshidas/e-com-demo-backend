@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { GroupService } from 'src/group/group.service';
 import { CreateRoleDto } from 'src/roles/dto/create-role.dto';
 import { RoleService } from 'src/roles/roles.service';
-import { CreateUserRequest } from 'src/user/dto/user.dto';
+import { CreateUserRequest } from 'src/user/dto/user-request.dto';
 import { UserService } from 'src/user/user.service';
 
 const adminInfo: CreateUserRequest = {

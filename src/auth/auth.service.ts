@@ -4,7 +4,7 @@ import genJwt from 'src/shared/utils/gen-jwt';
 import verifyPassword from 'src/shared/utils/verify-password';
 import { UserService } from 'src/user/user.service';
 import { AuthRepo } from './auth.repo';
-import LoginUserRequest from './dto/login.dto';
+import LoginUserRequest, { LoggedInSuccessResponse } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +14,9 @@ export class AuthService {
     private readonly groupService: GroupService,
   ) {}
 
-  async login(loginUserDto: LoginUserRequest): Promise<string> {
+  async login(
+    loginUserDto: LoginUserRequest,
+  ): Promise<LoggedInSuccessResponse> {
     const { password, id } = await this.userService.getUserPasswordByEmail(
       loginUserDto.email,
     );
@@ -25,7 +27,8 @@ export class AuthService {
       const isAdmin = await this.groupService.isAdmin(id);
       const timeLogged = await this.authRepo.create(id);
       if (timeLogged) {
-        return await genJwt({ id, isAdmin: isAdmin });
+        const token = await genJwt({ id, isAdmin: isAdmin });
+        return { token };
       }
     }
 

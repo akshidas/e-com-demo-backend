@@ -1,12 +1,10 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, now } from 'mongoose';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
-import { CreateUserRequest, UpdateUserRequest } from './dto/user.dto';
+import EntityNotFound from 'src/shared/utils/errors/entity-not-found.error';
+import Failure from 'src/shared/utils/errors/failed.error';
+import { CreateUserRequest, UpdateUserRequest } from './dto/user-request.dto';
 import { User, UserDocument } from './entity/user.entity';
 
 @Injectable()
@@ -35,7 +33,7 @@ export class UserRepo {
     try {
       return await this.userModel.find();
     } catch (err) {
-      throw new InternalServerErrorException('something went wrong');
+      throw new Failure(err);
     }
   }
 
@@ -48,7 +46,7 @@ export class UserRepo {
         throw new DuplicateKeyError(err);
       }
 
-      throw new InternalServerErrorException(err.message);
+      throw new Failure(err);
     }
   }
 
@@ -79,7 +77,7 @@ export class UserRepo {
         '-password',
         '-deleted_at',
       ]);
-    } else throw new NotFoundException(`user not found`);
+    } else throw new EntityNotFound(`user not found`);
   }
 
   async deleteOne(id: string): Promise<UserDocument> {
@@ -90,7 +88,7 @@ export class UserRepo {
       },
       { returnOriginal: false },
     );
-    if (deletedUser === null) throw new NotFoundException('user not found');
+    if (deletedUser === null) throw new EntityNotFound('user not found');
     return deletedUser;
   }
 }

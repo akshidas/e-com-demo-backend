@@ -18,7 +18,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
-import { CreateUserRequest, UpdateUserRequest } from './dto/user.dto';
+import EntityNotFound from 'src/shared/utils/errors/entity-not-found.error';
+import { CreateUserRequest, UpdateUserRequest } from './dto/user-request.dto';
 import { UserService } from './user.service';
 
 @ApiTags('users')
@@ -58,7 +59,7 @@ export class UserController {
     try {
       const token = await this.userService.create(CreateUserRequest);
 
-      return { data: token };
+      return token;
     } catch (err) {
       if (err instanceof InternalServerErrorException)
         throw new InternalServerErrorException(err.message);
@@ -75,10 +76,10 @@ export class UserController {
     try {
       const deleted = await this.userService.deleteUserById(req.id);
       if (deleted) {
-        return;
+        return { data: deleted.id };
       }
     } catch (err) {
-      if (err instanceof NotFoundException) {
+      if (err instanceof EntityNotFound) {
         throw new NotFoundException(err.message);
       }
       throw new InternalServerErrorException('failed to delete user');
