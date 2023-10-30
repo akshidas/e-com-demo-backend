@@ -5,9 +5,9 @@ import { AddressController } from './address/address.controller';
 import { AddressRepo } from './address/address.repo';
 import { Address, AddressSchema } from './address/address.schema';
 import { AddressService } from './address/address.service';
+import { User, UserSchema } from './entity/user.entity';
 import { UserController } from './user.controller';
 import { UserRepo } from './user.repo';
-import { User, UserSchema } from './user.schema';
 import { UserService } from './user.service';
 
 @Module({

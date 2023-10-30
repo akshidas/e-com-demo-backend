@@ -17,7 +17,7 @@ export class UserService {
   }
 
   async getAdmin() {
-    const admin = this.userRepo.getOneByMail('admin@gmail.com');
+    const admin = await this.userRepo.getOneByMail('admin@gmail.com');
     if (admin) return admin;
     throw new EntityNotFound('admin@gmail.com');
   }

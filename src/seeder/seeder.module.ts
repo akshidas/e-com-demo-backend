@@ -8,9 +8,9 @@ import { RoleModule } from 'src/roles/role.module';
 import { RoleRepo } from 'src/roles/role.repo';
 import { Role, RoleSchema } from 'src/roles/role.schema';
 import { RoleService } from 'src/roles/roles.service';
+import { User, UserSchema } from 'src/user/entity/user.entity';
 import { UserModule } from 'src/user/user.module';
 import { UserRepo } from 'src/user/user.repo';
-import { User, UserSchema } from 'src/user/user.schema';
 import { UserService } from 'src/user/user.service';
 import { SeederService } from './seeder.service';
 
