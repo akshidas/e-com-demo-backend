@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { isValidObjectId, now } from 'mongoose';
-import { CreateProductsDto, UpdateProductDto } from './dto/products.dto';
+import { CreateProductRequest, UpdateProductRequest } from './dto/products.dto';
 import { ProductsRepo } from './products.repo';
 import { Product } from './products.schema';
 
 @Injectable()
 export class ProductsService {
   constructor(private readonly productRepo: ProductsRepo) {}
-  async insertMany(productList: CreateProductsDto[]) {
+  async insertMany(productList: CreateProductRequest[]) {
     return this.productRepo.insertMany(productList);
   }
   async getAll() {
@@ -23,25 +23,29 @@ export class ProductsService {
     }
   }
 
-  async createProduct(createProductDto: CreateProductsDto) {
+  async createProduct(createProductDto: CreateProductRequest) {
     const product = plainToClass(Product, createProductDto);
-    const createdProduct = this.productRepo.createProduct(product);
+
+    const createdProduct = await this.productRepo.createProduct(product);
     return createdProduct;
   }
 
   private async identifyParamAndUpdate(
     slug: string,
-    updateProductDto: UpdateProductDto,
+    UpdateProductRequest: UpdateProductRequest,
   ) {
     return isValidObjectId(slug)
-      ? this.productRepo.updateProductById(slug, updateProductDto)
-      : this.productRepo.updateProductBySlug(slug, updateProductDto);
+      ? this.productRepo.updateProductById(slug, UpdateProductRequest)
+      : this.productRepo.updateProductBySlug(slug, UpdateProductRequest);
   }
 
-  async updateProduct(slug: string, updateProductDto: UpdateProductDto) {
+  async updateProduct(
+    slug: string,
+    UpdateProductRequest: UpdateProductRequest,
+  ) {
     const updatedProduct = await this.identifyParamAndUpdate(
       slug,
-      updateProductDto,
+      UpdateProductRequest,
     );
 
     if (updatedProduct) {
@@ -54,7 +58,7 @@ export class ProductsService {
     try {
       const deletedProduct = await this.identifyParamAndUpdate(slug, {
         deleted_at: now(),
-      } as UpdateProductDto);
+      } as UpdateProductRequest);
 
       if (deletedProduct) {
         return deletedProduct;

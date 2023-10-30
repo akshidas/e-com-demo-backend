@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
-import { CreateProductsDto, UpdateProductDto } from './dto/products.dto';
+import { CreateProductRequest, UpdateProductRequest } from './dto/products.dto';
 import { ConvertSlug } from './product-slug-transform.pipe';
 import { ProductsService } from './products.service';
 
@@ -43,7 +43,7 @@ export class ProductsController {
 
   @Post()
   @UsePipes(new ConvertSlug())
-  async createProduct(@Body() createProductDto: CreateProductsDto) {
+  async createProduct(@Body() createProductDto: CreateProductRequest) {
     try {
       const savedProduct = await this.productService.createProduct(
         createProductDto,
@@ -59,13 +59,13 @@ export class ProductsController {
 
   @Put(':slug')
   async updateProduct(
-    @Body() updateProductDto: UpdateProductDto,
+    @Body() UpdateProductRequest: UpdateProductRequest,
     @Param('slug') slug: string,
   ) {
     try {
       const savedProduct = await this.productService.updateProduct(
         slug,
-        updateProductDto,
+        UpdateProductRequest,
       );
       if (savedProduct) return { data: savedProduct };
     } catch (err) {

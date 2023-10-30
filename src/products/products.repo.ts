@@ -7,7 +7,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
 import UpdateFailedError from 'src/shared/utils/errors/update-failed.error';
-import { CreateProductsDto, UpdateProductDto } from './dto/products.dto';
+import { CreateProductRequest, UpdateProductRequest } from './dto/products.dto';
 import { Product } from './products.schema';
 
 type Filter = {
@@ -21,7 +21,7 @@ export class ProductsRepo {
     @InjectModel(Product.name) private productModel: Model<Product>,
   ) {}
 
-  async insertMany(productList: CreateProductsDto[]) {
+  async insertMany(productList: CreateProductRequest[]) {
     return this.productModel.insertMany(productList);
   }
 
@@ -73,7 +73,7 @@ export class ProductsRepo {
     return this.findOne({ slug: slug });
   }
 
-  async createProduct(createProductDto: Product) {
+  async createProduct(createProductDto: Product): Promise<Product> {
     try {
       const newProduct = new this.productModel(createProductDto);
       const savedProduct = await newProduct.save();
@@ -87,11 +87,14 @@ export class ProductsRepo {
     }
   }
 
-  async updateProductById(id: string, updateProductDto: UpdateProductDto) {
+  async updateProductById(
+    id: string,
+    UpdateProductRequest: UpdateProductRequest,
+  ) {
     try {
       const updatedProduct = await this.productModel.findOneAndUpdate(
         { _id: id, deleted_at: null },
-        updateProductDto,
+        UpdateProductRequest,
         {
           returnOriginal: false,
         },
@@ -104,11 +107,14 @@ export class ProductsRepo {
     }
   }
 
-  async updateProductBySlug(slug: string, updateProductDto: UpdateProductDto) {
+  async updateProductBySlug(
+    slug: string,
+    UpdateProductRequest: UpdateProductRequest,
+  ) {
     try {
       const updatedProduct = await this.productModel.findOneAndUpdate(
         { slug: slug, deleted_at: null },
-        updateProductDto,
+        UpdateProductRequest,
         {
           returnOriginal: false,
         },

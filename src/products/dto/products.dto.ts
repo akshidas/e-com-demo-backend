@@ -8,9 +8,8 @@ import {
   IsString,
   Matches,
 } from 'class-validator';
-import { Image } from 'src/images/image.schema';
 
-export class CreateProductsDto {
+export class CreateProductRequest {
   @IsNotEmpty()
   @IsString()
   @ApiProperty({ description: 'Name of the product', example: 'Product One' })
@@ -24,7 +23,7 @@ export class CreateProductsDto {
   @IsArray()
   @IsNotEmpty()
   @ApiProperty({ description: 'Id arrays of product images' })
-  images: Image[];
+  images: string[];
 
   @IsNotEmpty()
   @IsNumber()
@@ -54,6 +53,6 @@ export class CreateProductsDto {
   category_id: string;
 }
 
-export class UpdateProductDto extends PartialType(CreateProductsDto) {
+export class UpdateProductRequest extends PartialType(CreateProductRequest) {
   deleted_at?: Date;
 }

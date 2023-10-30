@@ -1,11 +1,11 @@
 import { Injectable, PipeTransform } from '@nestjs/common';
-import { CreateProductsDto } from './dto/products.dto';
+import { CreateProductRequest } from './dto/products.dto';
 
 @Injectable()
 export class ConvertSlug
-  implements PipeTransform<CreateProductsDto, CreateProductsDto>
+  implements PipeTransform<CreateProductRequest, CreateProductRequest>
 {
-  transform(createProductDto: CreateProductsDto): CreateProductsDto {
+  transform(createProductDto: CreateProductRequest): CreateProductRequest {
     const { name, slug } = createProductDto;
     if (Boolean(slug)) return createProductDto;
     createProductDto.slug = name.toLowerCase().replaceAll(' ', '-');
