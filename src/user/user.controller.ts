@@ -14,7 +14,9 @@ import {
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiInternalServerErrorResponse,
   ApiOkResponse,
+  ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
@@ -30,10 +32,20 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @ApiOperation({
+    summary: 'get the list of all users',
+  })
   @ApiOkResponse({ description: 'users retrieved successfully' })
+  @ApiInternalServerErrorResponse({
+    description: 'failed to retrieve list of users',
+  })
   @Get()
   async getAll() {
-    return this.userService.getAll();
+    try {
+      return await this.userService.getAll();
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
   }
 
   @Get('profile')
@@ -72,7 +84,7 @@ export class UserController {
   }
 
   @Delete()
-  async DeleteSingleUser(@Req() req) {
+  async deleteSingleUser(@Req() req) {
     try {
       const deleted = await this.userService.deleteUserById(req.id);
       if (deleted) {

@@ -10,6 +10,15 @@ import { User, UserDocument } from './entity/user.entity';
 @Injectable()
 export class UserRepo {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+
+  async getAllUsers(): Promise<UserDocument[]> {
+    try {
+      return await this.userModel.find({ deleted_at: null }, ['-password']);
+    } catch (err) {
+      throw new Failure(err);
+    }
+  }
+
   async createMany(usersList: CreateUserRequest[]): Promise<UserDocument[]> {
     try {
       const savedUsers = await this.userModel.insertMany(usersList);
@@ -27,14 +36,6 @@ export class UserRepo {
       'firstName',
       'email',
     ]);
-  }
-
-  async getAllUsers(): Promise<UserDocument[]> {
-    try {
-      return await this.userModel.find();
-    } catch (err) {
-      throw new Failure(err);
-    }
   }
 
   async create(CreateUserRequest: CreateUserRequest): Promise<UserDocument> {

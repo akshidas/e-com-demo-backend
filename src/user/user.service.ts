@@ -11,6 +11,11 @@ import { UserRepo } from './user.repo';
 export class UserService {
   constructor(private readonly userRepo: UserRepo) {}
 
+  async getAll() {
+    const usersList = await this.userRepo.getAllUsers();
+    return usersList;
+  }
+
   async insertMultipleUsers(usersList: CreateUserRequest[]) {
     return this.userRepo.createMany(usersList);
   }
@@ -21,9 +26,6 @@ export class UserService {
     throw new EntityNotFound('admin@gmail.com');
   }
 
-  async getAll() {
-    return this.userRepo.getAllUsers();
-  }
   async create(
     CreateUserRequest: CreateUserRequest,
   ): Promise<LoggedInSuccessResponse> {
