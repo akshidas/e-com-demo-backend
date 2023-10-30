@@ -14,11 +14,14 @@ import {
 import {
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiInternalServerErrorResponse,
   ApiOkResponse,
+  ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import EntityNotFound from 'src/shared/utils/errors/entity-not-found.error';
+import { CreateUserRequest, UpdateUserRequest } from './dto/user-request.dto';
 import { UserService } from './user.service';
 
 @ApiTags('users')
@@ -29,10 +32,20 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @ApiOperation({
+    summary: 'get the list of all users',
+  })
   @ApiOkResponse({ description: 'users retrieved successfully' })
+  @ApiInternalServerErrorResponse({
+    description: 'failed to retrieve list of users',
+  })
   @Get()
   async getAll() {
-    return this.userService.getAll();
+    try {
+      return await this.userService.getAll();
+    } catch (err) {
+      throw new InternalServerErrorException(err);
+    }
   }
 
   @Get('profile')
@@ -42,8 +55,11 @@ export class UserController {
   }
 
   @Put('profile')
-  async updateProfile(@Req() req, @Body() UpdateUserDto: UpdateUserDto) {
-    const user = await this.userService.updateUser(req.id, UpdateUserDto);
+  async updateProfile(
+    @Req() req,
+    @Body() UpdateUserRequest: UpdateUserRequest,
+  ) {
+    const user = await this.userService.updateUser(req.id, UpdateUserRequest);
     return { data: user };
   }
 
@@ -51,11 +67,11 @@ export class UserController {
     description: 'successfully created user',
   })
   @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() CreateUserRequest: CreateUserRequest) {
     try {
-      const token = await this.userService.create(createUserDto);
+      const token = await this.userService.create(CreateUserRequest);
 
-      return { data: token };
+      return token;
     } catch (err) {
       if (err instanceof InternalServerErrorException)
         throw new InternalServerErrorException(err.message);
@@ -68,14 +84,14 @@ export class UserController {
   }
 
   @Delete()
-  async DeleteSingleUser(@Req() req) {
+  async deleteSingleUser(@Req() req) {
     try {
       const deleted = await this.userService.deleteUserById(req.id);
       if (deleted) {
-        return;
+        return { data: deleted.id };
       }
     } catch (err) {
-      if (err instanceof NotFoundException) {
+      if (err instanceof EntityNotFound) {
         throw new NotFoundException(err.message);
       }
       throw new InternalServerErrorException('failed to delete user');

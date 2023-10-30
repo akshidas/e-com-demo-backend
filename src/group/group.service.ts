@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { RoleDocument } from 'src/roles/role.schema';
 import { RoleService } from 'src/roles/roles.service';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
-import { UserDocument } from 'src/user/user.schema';
+import { UserDocument } from 'src/user/entity/user.entity';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { GroupRepo } from './group.repo';
 

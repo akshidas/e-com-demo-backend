@@ -14,7 +14,7 @@ class LoginUserRequest {
 }
 
 export class LoggedInSuccessResponse {
-  data: string;
+  token: string;
 }
 
 export default LoginUserRequest;

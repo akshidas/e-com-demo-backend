@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { User } from 'src/user/user.schema';
+import { User } from 'src/user/entity/user.entity';
 
 @Schema()
 export class Auth {
