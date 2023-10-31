@@ -1,11 +1,8 @@
-import {
-  ConflictException,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, now } from 'mongoose';
+import EntityNotFound from 'src/shared/utils/errors/entity-not-found.error';
+import Failure from 'src/shared/utils/errors/failed.error';
 import { Category } from './category.schema';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto/category.dto';
 
@@ -21,10 +18,10 @@ export class CategoryRepo {
       return await createdCategory.save();
     } catch (err) {
       if (err.code) {
-        throw new ConflictException(`${createCategoryDto.name} already exists`);
+        throw new EntityNotFound(`${createCategoryDto.name} already exists`);
       }
 
-      throw new InternalServerErrorException(err.message);
+      throw new Failure(err);
     }
   }
 
@@ -46,7 +43,7 @@ export class CategoryRepo {
       return category;
     }
 
-    throw new NotFoundException('category not found');
+    throw new EntityNotFound('category not found');
   }
 
   async getBySlug(slug: string) {
@@ -59,7 +56,7 @@ export class CategoryRepo {
       return category;
     }
 
-    throw new NotFoundException('category not found');
+    throw new EntityNotFound('category not found');
   }
 
   async updateById(id, updateCategoryDto: UpdateCategoryDto) {
@@ -74,7 +71,7 @@ export class CategoryRepo {
       },
     );
     if (updatedCategory === null)
-      throw new NotFoundException('category not found');
+      throw new EntityNotFound('category not found');
 
     return updatedCategory;
   }
@@ -86,7 +83,7 @@ export class CategoryRepo {
     } as UpdateCategoryDto);
 
     if (deletedCategory === null)
-      throw new NotFoundException('category not found');
+      throw new EntityNotFound('category not found');
     return true;
   }
 }
