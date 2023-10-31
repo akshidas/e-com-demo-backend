@@ -22,7 +22,7 @@ export class CartService {
       const { id, quantity } = cart;
       return await this.updateCart(id, { quantity: quantity + 1 });
     }
-    return await this.cartRepo.create({ ...createCartDto, user });
+    return await this.cartRepo.create(user, createCartDto);
   }
 
   async updateCart(id: string, updateCartDto: UpdateCartDto) {

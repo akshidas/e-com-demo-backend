@@ -8,8 +8,8 @@ import { CreateCartDto, UpdateCartDto } from './dto/cart.dto';
 export class CartRepo {
   constructor(@InjectModel(Cart.name) private cartModel: Model<Cart>) {}
 
-  async create(createCartDto: CreateCartDto) {
-    const cart = new this.cartModel(createCartDto);
+  async create(user, createCartDto: CreateCartDto) {
+    const cart = new this.cartModel({ user, ...createCartDto });
     return await cart.save();
   }
 
