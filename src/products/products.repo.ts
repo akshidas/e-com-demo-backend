@@ -1,11 +1,9 @@
-import {
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import DuplicateKeyError from 'src/shared/utils/errors/duplicate-key.error';
+import EntityNotFound from 'src/shared/utils/errors/entity-not-found.error';
+import Failure from 'src/shared/utils/errors/failed.error';
 import UpdateFailedError from 'src/shared/utils/errors/update-failed.error';
 import { CreateProductRequest, UpdateProductRequest } from './dto/products.dto';
 import { Product } from './products.schema';
@@ -53,15 +51,14 @@ export class ProductsRepo {
 
         return populated;
       }
-      throw new NotFoundException('the resource does not exist');
+      throw new EntityNotFound('the resource does not exist');
     } catch (err) {
       if (err instanceof TypeError) {
-        throw new NotFoundException('the resource does not exist');
+        throw new EntityNotFound('the resource does not exist');
       }
-      if (err instanceof NotFoundException)
-        throw new NotFoundException(err.message);
+      if (err instanceof EntityNotFound) throw new EntityNotFound(err.message);
 
-      throw new InternalServerErrorException(err.message);
+      throw new Failure(err.message);
     }
   }
 
@@ -83,7 +80,7 @@ export class ProductsRepo {
         throw new DuplicateKeyError(err);
       }
 
-      throw new InternalServerErrorException('something went wrong');
+      throw new Failure('something went wrong');
     }
   }
 

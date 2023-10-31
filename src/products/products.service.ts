@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { isValidObjectId, now } from 'mongoose';
+import EntityNotFound from 'src/shared/utils/errors/entity-not-found.error';
 import { CreateProductRequest, UpdateProductRequest } from './dto/products.dto';
 import { ProductsRepo } from './products.repo';
 import { Product } from './products.schema';
@@ -51,7 +52,7 @@ export class ProductsService {
     if (updatedProduct) {
       return updatedProduct;
     }
-    throw new NotFoundException('product not found');
+    throw new EntityNotFound('product not found');
   }
 
   async deleteProduct(slug: string) {
@@ -64,7 +65,7 @@ export class ProductsService {
         return deletedProduct;
       }
     } catch (err) {
-      if (err instanceof NotFoundException) {
+      if (err instanceof EntityNotFound) {
         return true;
       }
     }
