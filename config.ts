@@ -1,3 +1,6 @@
 import { readFileSync } from 'fs';
-
-export const PRIVATE_KEY = readFileSync('./keypair.pem', 'utf8');
+import path from 'path';
+export const PRIVATE_KEY = readFileSync(
+  path.join(__dirname, '../keypair.pem'),
+  'utf8',
+);
