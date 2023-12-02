@@ -49,7 +49,7 @@ export class AppModule {
     consumer
       .apply(AuthMiddleWare)
       .exclude(
-        { path: 'users', method: RequestMethod.POST },
+        { path: 'v1/users', method: RequestMethod.POST },
         { path: '(.*)/auth/(.*)', method: RequestMethod.POST },
       )
       .forRoutes('v1');
