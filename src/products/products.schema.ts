@@ -10,7 +10,8 @@ export class Product {
 
   @Prop({ required: true, unique: true })
   sku: string;
-
+  @Prop({ required: true })
+  description: string;
   @Prop({ default: true })
   status?: boolean;
 

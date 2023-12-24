@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { LoggedInSuccessResponse } from 'src/auth/dto/login.dto';
+import { GroupService } from 'src/group/group.service';
 import EntityNotFound from 'src/shared/utils/errors/entity-not-found.error';
 import Failure from 'src/shared/utils/errors/failed.error';
 import genJwt from 'src/shared/utils/gen-jwt';
@@ -9,7 +10,10 @@ import { UserRepo } from './user.repo';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepo: UserRepo) {}
+  constructor(
+    private readonly userRepo: UserRepo,
+    private readonly groupService: GroupService,
+  ) {}
 
   async getAll() {
     const usersList = await this.userRepo.getAllUsers();
@@ -36,8 +40,9 @@ export class UserService {
 
   async getById(id: string) {
     const user = await this.userRepo.getUserById(id);
+    const isAdmin = await this.groupService.isAdmin(id);
     if (user === null) throw new EntityNotFound(`user does not exist`);
-    return user;
+    return { ...user.toObject(), isAdmin };
   }
 
   async updateUser(id: string, UpdateUserRequest: UpdateUserRequest) {

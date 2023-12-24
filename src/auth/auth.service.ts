@@ -1,5 +1,6 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { GroupService } from 'src/group/group.service';
+import UnAuthorizedUser from 'src/shared/utils/errors/unauthorize-user';
 import genJwt from 'src/shared/utils/gen-jwt';
 import verifyPassword from 'src/shared/utils/verify-password';
 import { UserService } from 'src/user/user.service';
@@ -32,6 +33,6 @@ export class AuthService {
       }
     }
 
-    throw new UnauthorizedException('passwords do not match');
+    throw new UnAuthorizedUser('passwords do not match');
   }
 }

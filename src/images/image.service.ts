@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ImageRepo } from './image.repo';
 
 @Injectable()
@@ -11,7 +11,7 @@ export class ImageService {
 
     const image = await this.imageRepo.create({
       name,
-      url: `http://localhost:3000/public/${filename}`,
+      url: `http://localhost:9000/public/${filename}`,
       size,
     });
     if (image) {

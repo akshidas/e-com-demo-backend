@@ -24,10 +24,17 @@ export class ProductsRepo {
   }
 
   async getAll() {
-    return this.productModel.find({ deleted_at: null }, [
-      '-deleted_at',
-      '-updated_at',
-    ]);
+    return this.productModel
+      .find({ deleted_at: null }, [
+        '-deleted_at',
+        '-updated_at',
+        '-description',
+      ])
+      .populate({
+        path: 'category',
+        select: ['name', 'slug'],
+      })
+      .populate({ path: 'images', select: ['url', 'name'] });
   }
 
   private async findOne(filter: Filter) {

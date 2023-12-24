@@ -59,6 +59,7 @@ export class UserController {
     @Req() req,
     @Body() UpdateUserRequest: UpdateUserRequest,
   ) {
+    console.log('first');
     const user = await this.userService.updateUser(req.id, UpdateUserRequest);
     return { data: user };
   }
